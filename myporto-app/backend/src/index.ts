@@ -22,10 +22,20 @@ const PORT = process.env.PORT || 8080;
 // Security middleware
 app.use(helmet());
 app.use(cors({
-  origin: [
-    process.env.FRONTEND_URL || 'http://localhost:3000',
-    /\.myporto\.id$/,
-  ],
+  origin: (origin, callback) => {
+    const allowed = [
+      process.env.FRONTEND_URL || 'http://localhost:3000',
+      'http://localhost:3000',
+    ];
+    // Allow Vercel preview deployments & subdomains
+    if (!origin || allowed.includes(origin) || 
+        origin.endsWith('.vercel.app') || 
+        origin.endsWith('.myporto.id')) {
+      callback(null, true);
+    } else {
+      callback(new Error('Not allowed by CORS'));
+    }
+  },
   credentials: true,
 }));
 

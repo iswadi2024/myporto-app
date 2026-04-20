@@ -31,7 +31,7 @@ Thumbs.db
 .idea/
 
 # Prisma
-myporto-app/backend/prisma/migrations/
+# migrations folder intentionally tracked for deployment
 
 # Expo
 myporto-app/mobile/.expo/

@@ -20,7 +20,7 @@ router.post(
 router.post(
   '/login',
   [
-    body('email').isEmail().normalizeEmail(),
+    body('email').isEmail().toLowerCase(),
     body('password').notEmpty(),
   ],
   validateRequest,

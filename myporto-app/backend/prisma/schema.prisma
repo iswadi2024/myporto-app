@@ -1,0 +1,169 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id         Int      @id @default(autoincrement())
+  username   String   @unique @db.VarChar(50)
+  email      String   @unique @db.VarChar(100)
+  password   String   @db.VarChar(255)
+  role       Role     @default(USER)
+  is_paid    Boolean  @default(false)
+  is_active  Boolean  @default(true)
+  deleted_at DateTime?
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  profile             Profile?
+  education           Education[]
+  experience          Experience[]
+  skills_achievements SkillsAndAchievement[]
+  appearance          AppearanceSetting?
+  payments            Payment[]
+
+  @@map("users")
+}
+
+model Profile {
+  id               Int      @id @default(autoincrement())
+  user_id          Int      @unique
+  nama_lengkap     String   @db.VarChar(100)
+  bio_singkat      String?  @db.Text
+  foto_closeup     String?  @db.VarChar(255)
+  foto_fullbody    String?  @db.VarChar(255)
+  no_whatsapp      String?  @db.VarChar(20)
+  alamat_koordinat String?  @db.VarChar(255)
+  email_publik     String?  @db.VarChar(100)
+  instagram_url    String?  @db.VarChar(255)
+  linkedin_url     String?  @db.VarChar(255)
+  github_url       String?  @db.VarChar(255)
+  website_url      String?  @db.VarChar(255)
+  created_at       DateTime @default(now())
+  updated_at       DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("profiles")
+}
+
+model Education {
+  id           Int       @id @default(autoincrement())
+  user_id      Int
+  jenjang      String?   @db.VarChar(20)
+  institusi    String    @db.VarChar(100)
+  gelar        String?   @db.VarChar(50)
+  jurusan      String?   @db.VarChar(100)
+  tahun_masuk  Int?
+  tahun_lulus  Int?
+  ipk          Decimal?  @db.Decimal(3, 2)
+  deskripsi    String?   @db.Text
+  deleted_at   DateTime?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("education")
+}
+
+model Experience {
+  id               Int       @id @default(autoincrement())
+  user_id          Int
+  perusahaan       String    @db.VarChar(100)
+  jabatan          String    @db.VarChar(100)
+  tanggal_mulai    DateTime  @db.Date
+  tanggal_selesai  DateTime? @db.Date
+  masih_bekerja    Boolean   @default(false)
+  deskripsi_tugas  String?   @db.Text
+  deleted_at       DateTime?
+  created_at       DateTime  @default(now())
+  updated_at       DateTime  @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("experience")
+}
+
+model SkillsAndAchievement {
+  id             Int                  @id @default(autoincrement())
+  user_id        Int
+  type           SkillType
+  nama_kegiatan  String               @db.VarChar(255)
+  penyelenggara  String?              @db.VarChar(100)
+  tahun          Int?
+  sertifikat_url String?              @db.VarChar(255)
+  level          String?              @db.VarChar(50)
+  deleted_at     DateTime?
+  created_at     DateTime             @default(now())
+  updated_at     DateTime             @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("skills_and_achievements")
+}
+
+model AppearanceSetting {
+  id            Int      @id @default(autoincrement())
+  user_id       Int      @unique
+  theme_name    String   @default("modern") @db.VarChar(50)
+  primary_color String   @default("#3498db") @db.VarChar(7)
+  layout_type   String   @default("top-nav") @db.VarChar(50)
+  font_style    String   @default("inter") @db.VarChar(50)
+  created_at    DateTime @default(now())
+  updated_at    DateTime @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("appearance_settings")
+}
+
+// Pengaturan global platform (QRIS image, WA admin, dll)
+model SiteSetting {
+  id         Int      @id @default(autoincrement())
+  key        String   @unique @db.VarChar(100)
+  value      String   @db.Text
+  updated_at DateTime @updatedAt
+
+  @@map("site_settings")
+}
+
+model Payment {
+  id             Int           @id @default(autoincrement())
+  user_id        Int
+  order_id       String        @unique @db.VarChar(100)
+  amount         Decimal       @db.Decimal(10, 2)
+  status         PaymentStatus @default(PENDING)
+  bukti_bayar    String?       @db.VarChar(500)
+  catatan_admin  String?       @db.Text
+  confirmed_at   DateTime?
+  created_at     DateTime      @default(now())
+  updated_at     DateTime      @updatedAt
+
+  user User @relation(fields: [user_id], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+enum Role {
+  USER
+  ADMIN
+}
+
+enum SkillType {
+  kursus
+  pelatihan
+  organisasi
+  kompetensi
+}
+
+enum PaymentStatus {
+  PENDING
+  SUCCESS
+  FAILED
+  EXPIRED
+}

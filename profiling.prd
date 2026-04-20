@@ -1,0 +1,132 @@
+Secara teknis, ini adalah aplikasi SaaS (Software as a Service) untuk Personal Branding. Karena Anda akan menggunakan Vercel (Frontend), Railway (Backend/Deployment), dan MySQL, arsitektur ini sudah sangat solid untuk skala produksi.
+Berikut adalah Product Requirement Document (PRD) untuk aplikasi Portofolio Digital (Custom Subdomain):
+________________________________________
+PRODUCT REQUIREMENT DOCUMENT (PRD): MY-PORTO APP
+1. Visi Produk
+Membangun platform pembuatan portofolio digital profesional yang memungkinkan pengguna memiliki identitas online dengan nama mereka sendiri sebagai subdomain (misal: iswadi.myporto.id) dengan fitur kustomisasi layout yang instan dan elegan.
+________________________________________
+2. Target Pengguna
+•	Fresh Graduate & Profesional yang ingin memiliki CV online.
+•	Freelancer yang ingin menampilkan karya dan kompetensi.
+•	User umum yang ingin memiliki "kartu nama digital" atau undangan identitas.
+________________________________________
+3. Fitur Utama (Core Features)
+A. User Management & Onboarding
+•	Registrasi & Login: Akun pengguna menggunakan Email/No WhatsApp.
+•	Input Data Portofolio (Detail):
+o	Identitas: Nama lengkap, Foto (Close-up & Full body), Bio singkat.
+o	Riwayat: Pendidikan, Pekerjaan (Lengkap dengan tahun dan deskripsi).
+o	Kompetensi: Skill teknis dan soft skill.
+o	Pengembangan Diri: Kursus, Pelatihan, dan Pengalaman Organisasi.
+o	Kontak: No WhatsApp, Email, dan Koordinat Google Maps (URL Alamat).
+o	Sosial Media: Link ke LinkedIn, Instagram, GitHub, dll.
+B. Engine Kustomisasi (Layout & Tema)
+•	Theme Selector: Pengguna dapat memilih minimal 3-5 pilihan tema (Modern, Klasik, Minimalis).
+•	Color Palette: Mengubah warna utama (Primary Color) sesuai keinginan.
+•	Layout Switcher: Menentukan posisi elemen (misal: Riwayat Pekerjaan di atas atau di bawah).
+C. Sistem Dynamic Subdomain (Vercel Integration)
+•	Auto-Generated Link: Link dibuat berdasarkan nama pengguna. Contoh: iswadi-hamzah.myporto.id.
+•	Subdomain Routing: Menggunakan fitur Middleware di Vercel untuk menangkap nama subdomain dan mencocokannya dengan data di database MySQL.
+D. Paywall & Pembayaran (Monetisasi)
+•	Status Akun: Default akun adalah "Draft" (Hanya bisa dilihat oleh pengguna sendiri).
+•	Activation Payment: Pengguna diwajibkan membayar biaya aktivasi (Sekali bayar atau Berlangganan) untuk mendapatkan link publik yang bisa di-share.
+•	Integrasi Pembayaran: Menggunakan API Payment Gateway (seperti Midtrans/Xendit) untuk memproses pembayaran secara otomatis.
+________________________________________
+4. Dashboard Admin (Super Admin)
+•	User Management: Monitoring pengguna aktif dan non-aktif.
+•	Payment Monitoring: Melihat riwayat transaksi dan omzet bulanan.
+•	Content Control: Menghapus atau memblokir akun yang mengandung konten negatif/ilegal.
+•	Analytics: Melihat jumlah total pengunjung seluruh portofolio.
+________________________________________
+5. Arsitektur Teknis (Tech Stack)
+Komponen	Teknologi	Keterangan
+Frontend	Next.js (Vercel)	Mendukung Server-Side Rendering (SSR) agar portofolio cepat diakses dan SEO-friendly.
+Backend	Node.js / Express (Railway)	Sebagai pengolah API dan logika bisnis.
+Database	MySQL (Railway)	Penyimpanan data relasional dengan sistem CRUD lengkap.
+DNS/Subdomain	Vercel Middleware	Untuk menangani permintaan domain dinamis berdasarkan username.
+Maps	Google Maps API	Untuk mengubah koordinat menjadi peta interaktif di halaman profil.
+________________________________________
+6. Struktur Halaman Portofolio (Output)
+Halaman publik akan memiliki navigasi/tombol pindah halaman (Single Page Application style):
+1.	Home: Foto Profil, Identitas, Bio, dan Sosmed.
+2.	Pendidikan: List riwayat pendidikan (Urut berdasarkan tahun terbaru).
+3.	Pengalaman: List riwayat pekerjaan dan tanggung jawab.
+4.	Keahlian & Sertifikasi: Gabungan Kursus, Pelatihan, dan Organisasi.
+5.	Kontak: Alamat peta (Google Maps), No kontak, dan tombol Chat WA.
+________________________________________
+7. Strategi Implementasi (Sisi S.Kom)
+1.	Database CRUD: Karena data sangat banyak (Riwayat kerja, kursus, dll), pastikan menggunakan tabel terpisah yang direlasikan dengan user_id. Gunakan sistem Soft Delete agar data tidak hilang permanen jika terhapus.
+2.	Keamanan Gambar: Foto Close-up dan Full body harus diproses melalui Image Optimization agar ukuran file tidak membebani server (bisa menggunakan Cloudinary atau AWS S3).
+3.	SEO Management: Karena ini portofolio, buat sistem agar nama pengguna masuk ke dalam <meta-tag> HTML, sehingga ketika nama mereka di-Google, link portofolio muncul di halaman pertama.
+________________________________________
+Saran Tambahan:
+Mengingat Anda akan menggunakan Vercel, pastikan Anda mempelajari "Wildcard Subdomains" di Next.js. Ini memungkinkan satu aplikasi menangani ribuan subdomain secara otomatis tanpa perlu menambah konfigurasi manual setiap kali ada pendaftar baru.
+
+
+Berikut adalah skema database MySQL yang dirancang khusus untuk mendukung fitur CRUD, kustomisasi layout, dan sistem pembayaran pada aplikasi portofolio Anda:
+1. Tabel Utama: users
+Menampung data autentikasi dan status aktivasi (pembayaran).
+•	id: INT PK AUTO_INCREMENT
+•	username: VARCHAR(50) UNIQUE (Akan jadi subdomain, misal: iswadi)
+•	email: VARCHAR(100) UNIQUE
+•	password: VARCHAR(255)
+•	is_paid: BOOLEAN DEFAULT FALSE (Kunci akses link publik)
+•	created_at: TIMESTAMP
+2. Tabel Profil: profiles
+Menampung identitas lengkap dan foto.
+•	id: INT PK AUTO_INCREMENT
+•	user_id: INT FK (Relasi ke users.id)
+•	nama_lengkap: VARCHAR(100)
+•	bio_singkat: TEXT
+•	foto_closeup: VARCHAR(255)
+•	foto_fullbody: VARCHAR(255)
+•	no_whatsapp: VARCHAR(20)
+•	alamat_koordinat: VARCHAR(255) (URL Google Maps/Lat-Long)
+•	instagram_url: VARCHAR(255)
+•	linkedin_url: VARCHAR(255)
+3. Tabel Riwayat Pendidikan: education
+•	id: INT PK AUTO_INCREMENT
+•	user_id: INT FK
+•	institusi: VARCHAR(100)
+•	gelar: VARCHAR(50)
+•	tahun_masuk: YEAR
+•	tahun_lulus: YEAR
+•	deskripsi: TEXT
+4. Tabel Riwayat Pekerjaan: experience
+•	id: INT PK AUTO_INCREMENT
+•	user_id: INT FK
+•	perusahaan: VARCHAR(100)
+•	jabatan: VARCHAR(100)
+•	tanggal_mulai: DATE
+•	tanggal_selesai: DATE (Null jika masih bekerja)
+•	deskripsi_tugas: TEXT
+5. Tabel Pengembangan Diri: skills_and_achievements
+Menampung Kursus, Pelatihan, Organisasi, dan Kompetensi (dibedakan berdasarkan type).
+•	id: INT PK AUTO_INCREMENT
+•	user_id: INT FK
+•	type: ENUM('kursus', 'pelatihan', 'organisasi', 'kompetensi')
+•	nama_kegiatan: VARCHAR(255)
+•	penyelenggara: VARCHAR(100)
+•	tahun: YEAR
+•	sertifikat_url: VARCHAR(255) (Opsional)
+6. Tabel Tampilan: appearance_settings
+Menyimpan konfigurasi layout dan tema pilihan user.
+•	id: INT PK AUTO_INCREMENT
+•	user_id: INT FK
+•	theme_name: VARCHAR(50) (Misal: 'modern', 'elegant')
+•	primary_color: VARCHAR(7) (Kode Hex, misal: '#3498db')
+•	layout_type: VARCHAR(50) (Misal: 'sidebar-nav' atau 'top-nav')
+•	font_style: VARCHAR(50)
+7. Tabel Transaksi: payments
+•	id: INT PK AUTO_INCREMENT
+•	user_id: INT FK
+•	transaction_id: VARCHAR(100) (Dari Payment Gateway)
+•	amount: DECIMAL(10,2)
+•	status: ENUM('pending', 'success', 'failed')
+•	payment_date: TIMESTAMP
+________________________________________
+Tips Implementasi untuk Railway & Vercel:
+1.	Relasi Database: Gunakan ON DELETE CASCADE pada Foreign Key agar saat user menghapus akunnya, semua data riwayat pendidikan dan pekerjaannya ikut terhapus secara bersih.
+2.	Handling Subdomain di Vercel: Di Next.js, Anda bisa menggunakan middleware.ts untuk membaca req.headers.get('host'). Jika host-nya adalah iswadi.myporto.id, ambil string iswadi, lalu lakukan query ke MySQL: SELECT * FROM users JOIN profiles ON users.id = profiles.user_id WHERE users.username = 'iswadi' AND users.is_paid = 1.
+3.	CRUD Management: Karena Anda menggunakan MySQL, pastikan menggunakan Library seperti Sequelize atau Prisma ORM di Node.js (Railway) untuk mempermudah operasi CRUD tanpa harus menulis query SQL manual yang panjang.
+

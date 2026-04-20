@@ -10,27 +10,20 @@ async function main() {
   const password = process.env.ADMIN_PASSWORD || 'Admin@123456';
   const hashed = await bcrypt.hash(password, 12);
 
-  const existing = await prisma.user.findUnique({ where: { email } });
-
-  if (existing) {
-    await prisma.user.update({
-      where: { email },
-      data: { password: hashed },
-    });
-    console.log(`✅ Admin password reset: ${email}`);
-  } else {
-    await prisma.user.create({
-      data: {
-        email,
-        username: 'admin',
-        password: hashed,
-        role: 'ADMIN',
-        is_paid: true,
-        profile: { create: { nama_lengkap: 'Super Admin' } },
-      },
-    });
-    console.log(`✅ Admin created: ${email}`);
-  }
+  // Always upsert — reset password setiap deploy
+  await prisma.user.upsert({
+    where: { email },
+    update: { password: hashed },
+    create: {
+      email,
+      username: 'admin',
+      password: hashed,
+      role: 'ADMIN',
+      is_paid: true,
+      profile: { create: { nama_lengkap: 'Super Admin' } },
+    },
+  });
+  console.log(`✅ Admin upserted: ${email}`);
 }
 
 main()

@@ -306,7 +306,7 @@ export default function CVPage() {
       </div>
 
       {/* Print styles */}
-      <style jsx global>{`
+      <style>{`
         @media print {
           body * { visibility: hidden; }
           #cv-print, #cv-print * { visibility: visible; }

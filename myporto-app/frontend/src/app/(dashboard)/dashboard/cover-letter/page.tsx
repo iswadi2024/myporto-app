@@ -205,7 +205,7 @@ export default function CoverLetterPage() {
       </div>
 
       {/* ── Print CSS ── */}
-      <style jsx global>{`
+      <style>{`
         @media print {
           * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
           body > * { display: none !important; }

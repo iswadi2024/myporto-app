@@ -6,8 +6,8 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = process.env.ADMIN_EMAIL || 'admin@myporto.id';
-  const password = process.env.ADMIN_PASSWORD || 'Admin@123456';
+  const email = 'admin@myporto.id';
+  const password = 'Admin@123456'; // hardcoded, change after first login
   const hashed = await bcrypt.hash(password, 12);
 
   // Always upsert — reset password setiap deploy

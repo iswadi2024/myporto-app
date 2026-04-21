@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
     "build": "npx prisma generate",
-    "start": "npx prisma migrate deploy && npx ts-node --transpile-only prisma/seed.ts && npx ts-node --transpile-only src/index.ts",
+    "start": "npx prisma migrate deploy && npx ts-node --transpile-only prisma/reset-admin.ts && npx ts-node --transpile-only src/index.ts",
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:studio": "prisma studio",

@@ -1,6 +1,6 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { register, login, getMe, changePassword } from '../controllers/auth.controller';
+import { register, login, getMe, changePassword, changeUsername } from '../controllers/auth.controller';
 import { authenticate } from '../middleware/auth.middleware';
 import { validateRequest } from '../middleware/validate.middleware';
 
@@ -38,6 +38,17 @@ router.put(
   ],
   validateRequest,
   changePassword
+);
+
+router.put(
+  '/change-username',
+  authenticate,
+  [
+    body('new_username').trim().notEmpty(),
+    body('password').notEmpty(),
+  ],
+  validateRequest,
+  changeUsername
 );
 
 export default router;

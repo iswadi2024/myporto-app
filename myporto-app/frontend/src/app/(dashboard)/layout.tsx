@@ -6,7 +6,7 @@ import Link from 'next/link';
 import {
   User, GraduationCap, Briefcase, Award, Palette,
   CreditCard, LogOut, Eye, LayoutDashboard, Globe,
-  FileText, Mail,
+  FileText, Mail, Settings,
 } from '@/components/ui/icons';
 import { useAuthStore } from '@/lib/store';
 import api from '@/lib/api';
@@ -23,6 +23,7 @@ const navItems = [
   { href: '/dashboard/cover-letter', label: 'Surat Lamaran', icon: Mail, color: 'text-rose-500' },
   { href: '/dashboard/payment', label: 'Pembayaran', icon: CreditCard, color: 'text-orange-500' },
   { href: '/dashboard/publish', label: 'Publikasi', icon: Globe, color: 'text-green-500' },
+  { href: '/dashboard/settings', label: 'Pengaturan Akun', icon: Settings, color: 'text-slate-400' },
 ];
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {

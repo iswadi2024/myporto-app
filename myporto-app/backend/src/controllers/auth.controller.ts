@@ -161,7 +161,55 @@ export const getMe = async (req: Request & { user?: { id: number } }, res: Respo
   }
 };
 
-export const changePassword = async (req: Request & { user?: { id: number } }, res: Response): Promise<void> => {
+export const changeUsername = async (req: Request & { user?: { id: number } }, res: Response): Promise<void> => {
+  try {
+    const { new_username, password } = req.body;
+
+    // Validasi format username
+    const usernameRegex = /^[a-z0-9-]{3,30}$/;
+    if (!usernameRegex.test(new_username)) {
+      res.status(400).json({ error: 'Username hanya boleh huruf kecil, angka, dan tanda hubung (3-30 karakter)' });
+      return;
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: req.user!.id },
+      select: { password: true, username: true },
+    });
+
+    if (!user) {
+      res.status(404).json({ error: 'User not found' });
+      return;
+    }
+
+    // Verifikasi password
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) {
+      res.status(400).json({ error: 'Password tidak sesuai' });
+      return;
+    }
+
+    // Cek username sudah dipakai
+    const existing = await prisma.user.findUnique({ where: { username: new_username } });
+    if (existing) {
+      res.status(409).json({ error: 'Username sudah digunakan' });
+      return;
+    }
+
+    const updated = await prisma.user.update({
+      where: { id: req.user!.id },
+      data: { username: new_username },
+      select: { id: true, email: true, username: true, role: true, is_paid: true },
+    });
+
+    res.json({ message: 'Username berhasil diubah', user: updated });
+  } catch (error) {
+    console.error('ChangeUsername error:', error);
+    res.status(500).json({ error: 'Gagal mengubah username' });
+  }
+};
+
+
   try {
     const { current_password, new_password } = req.body;
 

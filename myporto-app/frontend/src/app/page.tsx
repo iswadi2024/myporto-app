@@ -53,9 +53,9 @@ export default function LandingPage() {
               </h1>
 
               <p className="text-lg text-slate-300 mb-10 max-w-xl leading-relaxed">
-                Buat portofolio digital yang memukau dengan subdomain personal.
+                Buat portofolio digital yang memukau dengan link personal.
                 Tampilkan CV, pengalaman, dan keahlian Anda di{' '}
-                <span className="text-blue-300 font-semibold">nama-anda.myporto.id</span>
+                <span className="text-blue-300 font-semibold">myporto-app.vercel.app/p/nama-anda</span>
               </p>
 
               <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
@@ -105,7 +105,7 @@ export default function LandingPage() {
                 </div>
                 <div>
                   <p className="text-xs font-bold text-gray-900">Portofolio Aktif</p>
-                  <p className="text-xs text-gray-500">iswadi.myporto.id</p>
+                  <p className="text-xs text-gray-500">myporto-app.vercel.app/p/iswadi</p>
                 </div>
               </div>
 
@@ -139,8 +139,8 @@ export default function LandingPage() {
           {[
             {
               icon: Globe,
-              title: 'Subdomain Personal',
-              desc: 'Dapatkan link unik nama-anda.myporto.id yang mudah diingat dan dibagikan.',
+              title: 'Link Personal',
+              desc: 'Dapatkan link unik myporto-app.vercel.app/p/nama-anda yang mudah diingat dan dibagikan.',
               color: 'blue',
             },
             {
@@ -197,7 +197,7 @@ export default function LandingPage() {
             {[
               { step: '01', title: 'Daftar Akun', desc: 'Buat akun gratis dengan email Anda. Tidak perlu kartu kredit.' },
               { step: '02', title: 'Isi Portofolio', desc: 'Tambahkan profil, pendidikan, pengalaman, dan keahlian Anda.' },
-              { step: '03', title: 'Aktifkan & Bagikan', desc: 'Bayar sekali dan dapatkan link publik nama-anda.myporto.id.' },
+              { step: '03', title: 'Aktifkan & Bagikan', desc: 'Bayar sekali dan dapatkan link publik myporto-app.vercel.app/p/nama-anda.' },
             ].map((item) => (
               <div key={item.step} className="relative text-center">
                 <div className="w-20 h-20 bg-white rounded-2xl shadow-md border border-blue-100 flex items-center justify-center mx-auto mb-5">
@@ -237,7 +237,7 @@ export default function LandingPage() {
 
             <ul className="space-y-3 mb-8">
               {[
-                'Subdomain personal (nama.myporto.id)',
+                'Link publik yang bisa dibagikan',
                 'Semua fitur kustomisasi tema',
                 'Upload foto profil & fullbody',
                 'Link publik yang bisa dibagikan',
@@ -270,7 +270,7 @@ export default function LandingPage() {
             ))}
           </div>
           <blockquote className="text-xl sm:text-2xl font-medium text-slate-200 mb-6 leading-relaxed">
-            "MyPorto membantu saya mendapatkan pekerjaan impian. Recruiter langsung terkesan dengan portofolio profesional saya di iswadi.myporto.id"
+            "MyPorto membantu saya mendapatkan pekerjaan impian. Recruiter langsung terkesan dengan portofolio profesional saya di myporto-app.vercel.app/p/iswadi"
           </blockquote>
           <p className="text-slate-400 text-sm mb-10">— Iswadi H., Software Engineer</p>
 

@@ -102,7 +102,7 @@ export default function CVPage() {
           style={{ minHeight: '297mm', fontFamily: 'Arial, sans-serif' }}>
 
           {/* Header */}
-          <div style={{ background: selectedTheme.gradient }} className="text-white p-8 print:p-6">
+          <div style={{ background: selectedTheme.gradient, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as React.CSSProperties} className="text-white p-8 print:p-6">
             <div className="flex items-start gap-6">
               {/* Photo */}
               {profile?.foto_closeup ? (
@@ -150,7 +150,7 @@ export default function CVPage() {
           {/* Body — 2 column */}
           <div className="flex">
             {/* Left sidebar */}
-            <div className="w-64 flex-shrink-0 p-6 print:p-5" style={{ backgroundColor: selectedTheme.light }}>
+            <div className="w-64 flex-shrink-0 p-6 print:p-5" style={{ backgroundColor: selectedTheme.light, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as React.CSSProperties}>
 
               {/* Kompetensi */}
               {kompetensi.length > 0 && (
@@ -323,10 +323,10 @@ export default function CVPage() {
       {/* Print styles */}
       <style>{`
         @media print {
-          aside, nav, header, .no-print { display: none !important; visibility: hidden !important; }
-          body { margin: 0 !important; }
-          #cv-print { position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; visibility: visible !important; }
-          #cv-print * { visibility: visible !important; }
+          aside, nav, .no-print { display: none !important; visibility: hidden !important; }
+          body { margin: 0 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          #cv-print { position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; visibility: visible !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+          #cv-print * { visibility: visible !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
           @page { margin: 0; size: A4; }
         }
       `}</style>

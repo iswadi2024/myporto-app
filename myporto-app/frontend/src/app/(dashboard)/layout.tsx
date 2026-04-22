@@ -130,9 +130,15 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
       </aside>
 
       {/* Main */}
-      <main className="flex-1 ml-72 min-h-screen">
-        {children}
-      </main>
+      <div className="flex-1 ml-72 flex flex-col min-h-screen">
+        <main className="flex-1 p-8">
+          {children}
+        </main>
+        <footer className="border-t border-gray-200 bg-white px-8 py-3 flex items-center justify-between text-xs text-gray-400">
+          <span>© {new Date().getFullYear()} <strong className="text-gray-600">MyPorto</strong> — Platform Portofolio Digital Indonesia</span>
+          <span className="hidden sm:block">v1.0.0</span>
+        </footer>
+      </div>
     </div>
   );
 }

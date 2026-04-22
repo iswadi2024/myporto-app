@@ -119,7 +119,7 @@ export default function PaymentPage() {
   // Sudah aktif
   if (user?.is_paid) {
     return (
-      <div className="p-8">
+      <div>
         <div className="max-w-2xl mx-auto">
           <div className="bg-gradient-to-br from-green-50 to-emerald-50 border border-green-200 rounded-2xl p-8 text-center">
             <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
@@ -138,7 +138,7 @@ export default function PaymentPage() {
   }
 
   return (
-    <div className="p-8">
+    <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Pembayaran & Aktivasi</h1>
         <p className="text-gray-500 mt-1">Bayar via QRIS untuk mengaktifkan portofolio publik Anda</p>

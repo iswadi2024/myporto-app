@@ -10,7 +10,7 @@ export default function PublishPage() {
 
   if (!user?.is_paid) {
     return (
-      <div className="p-8">
+      <div>
         <div className="max-w-2xl mx-auto text-center py-16">
           <div className="w-16 h-16 bg-amber-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <Globe className="w-8 h-8 text-amber-500" />
@@ -31,7 +31,7 @@ export default function PublishPage() {
   const portfolioUrl = getPortfolioUrl(user.username);
 
   return (
-    <div className="p-8">
+    <div>
       <div className="mb-6">
         <h1 className="text-2xl font-bold text-gray-900">Publikasi Portofolio</h1>
         <p className="text-gray-500 mt-1">Portofolio Anda sudah aktif dan dapat diakses publik</p>

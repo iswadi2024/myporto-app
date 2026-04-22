@@ -210,6 +210,7 @@ export const changeUsername = async (req: Request & { user?: { id: number } }, r
 };
 
 
+export const changePassword = async (req: Request & { user?: { id: number } }, res: Response): Promise<void> => {
   try {
     const { current_password, new_password } = req.body;
 

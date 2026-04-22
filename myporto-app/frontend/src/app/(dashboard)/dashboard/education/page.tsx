@@ -132,14 +132,40 @@ export default function EducationPage() {
                   placeholder="2022"
                 />
               </div>
-              <div className="md:col-span-2">
-                <label className="block text-sm font-medium text-gray-700 mb-1">Deskripsi</label>
-                <textarea
-                  {...register('deskripsi')}
-                  rows={2}
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  IPK <span className="text-gray-400 font-normal">(opsional, maks. 4.00)</span>
+                </label>
+                <input
+                  {...register('ipk')}
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  max="4"
                   className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Prestasi, kegiatan, dll"
+                  placeholder="3.85"
                 />
+              </div>
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-1">
+                  Jenjang <span className="text-gray-400 font-normal">(opsional)</span>
+                </label>
+                <select
+                  {...register('jenjang')}
+                  className="w-full border border-gray-300 rounded-lg px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                >
+                  <option value="">-- Pilih Jenjang --</option>
+                  <option value="SD">SD</option>
+                  <option value="SMP">SMP</option>
+                  <option value="SMA/SMK">SMA/SMK</option>
+                  <option value="D1">D1</option>
+                  <option value="D2">D2</option>
+                  <option value="D3">D3</option>
+                  <option value="D4">D4</option>
+                  <option value="S1">S1</option>
+                  <option value="S2">S2</option>
+                  <option value="S3">S3</option>
+                </select>
               </div>
             </div>
             <div className="flex gap-3">
@@ -171,13 +197,27 @@ export default function EducationPage() {
                 <GraduationCap className="w-5 h-5 text-blue-600" />
               </div>
               <div>
-                <h3 className="font-semibold text-gray-900">{item.institusi}</h3>
+                <div className="flex items-center gap-2">
+                  <h3 className="font-semibold text-gray-900">{item.institusi}</h3>
+                  {(item as any).jenjang && (
+                    <span className="text-xs bg-blue-100 text-blue-700 px-2 py-0.5 rounded-full font-medium">
+                      {(item as any).jenjang}
+                    </span>
+                  )}
+                </div>
                 {item.gelar && <p className="text-gray-700 text-sm">{item.gelar}{item.jurusan ? ` — ${item.jurusan}` : ''}</p>}
-                {(item.tahun_masuk || item.tahun_lulus) && (
-                  <p className="text-gray-500 text-xs mt-1">
-                    {item.tahun_masuk} {item.tahun_masuk && item.tahun_lulus ? '—' : ''} {item.tahun_lulus}
-                  </p>
-                )}
+                <div className="flex items-center gap-3 mt-1">
+                  {(item.tahun_masuk || item.tahun_lulus) && (
+                    <p className="text-gray-500 text-xs">
+                      {item.tahun_masuk} {item.tahun_masuk && item.tahun_lulus ? '—' : ''} {item.tahun_lulus}
+                    </p>
+                  )}
+                  {(item as any).ipk && (
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full font-semibold">
+                      IPK {Number((item as any).ipk).toFixed(2)}
+                    </span>
+                  )}
+                </div>
               </div>
             </div>
             <div className="flex gap-2">

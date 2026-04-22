@@ -17,17 +17,17 @@ interface Payment {
   created_at: string;
 }
 
-// QR QRIS DIGIVA DESAIN TEMPLATE — NMID: ID1026471797831
-// Simpan file qris.png ke folder myporto-app/frontend/public/
-// atau ganti dengan URL Cloudinary setelah upload
-const QRIS_IMAGE_URL = process.env.NEXT_PUBLIC_QRIS_IMAGE_URL || '/qris.png';
-const QRIS_MERCHANT_NAME = 'DIGIVA DESAIN TEMPLATE';
-const QRIS_NMID = 'ID1026471797831';
-const QRIS_BANK = 'Semua e-wallet & m-banking (GoPay, OVO, DANA, ShopeePay, BSI, dll)';
+// QR QRIS — diambil dari database via API
+const DEFAULT_QRIS = '/qris.png';
 
 export default function PaymentPage() {
   const { user, setUser } = useAuthStore();
   const [payments, setPayments] = useState<Payment[]>([]);
+  const [qrisSettings, setQrisSettings] = useState({
+    image_url: DEFAULT_QRIS,
+    merchant_name: 'MyPorto',
+    nmid: '',
+  });
   const [activePayment, setActivePayment] = useState<Payment | null>(null);
   const [loading, setLoading] = useState(false);
   const [uploading, setUploading] = useState(false);
@@ -50,7 +50,18 @@ export default function PaymentPage() {
     }
   };
 
-  useEffect(() => { fetchData(); }, []);
+  useEffect(() => {
+    fetchData();
+    // Fetch QRIS settings dari API
+    api.get('/public/settings').then((res) => {
+      const s = res.data.settings || {};
+      setQrisSettings({
+        image_url: s.qris_image_url || DEFAULT_QRIS,
+        merchant_name: s.qris_merchant_name || 'MyPorto',
+        nmid: s.qris_nmid || '',
+      });
+    }).catch(() => {});
+  }, []);
 
   // Auto-polling setiap 15 detik setelah bukti diupload
   useEffect(() => {
@@ -167,12 +178,12 @@ export default function PaymentPage() {
             <p className="font-semibold text-gray-800 mb-1">Scan QRIS untuk Membayar</p>
             <p className="text-xs text-gray-500 mb-4">Berlaku untuk semua e-wallet & m-banking</p>
             <div className="inline-block p-2 bg-white border-2 border-red-100 rounded-xl shadow-sm">
-              <img src={QRIS_IMAGE_URL} alt="QRIS" className="w-52 h-52 object-contain" />
+              <img src={qrisSettings.image_url} alt="QRIS" className="w-52 h-52 object-contain" />
             </div>
             <div className="mt-4 bg-red-50 border border-red-100 rounded-xl p-3">
-              <p className="text-xs font-bold text-red-800 uppercase tracking-wide">{QRIS_MERCHANT_NAME}</p>
-              <p className="text-xs text-gray-500 mt-0.5">NMID: {QRIS_NMID}</p>
-              <p className="text-xs text-gray-500 mt-0.5">{QRIS_BANK}</p>
+              <p className="text-xs font-bold text-red-800 uppercase tracking-wide">{qrisSettings.merchant_name}</p>
+              {qrisSettings.nmid && <p className="text-xs text-gray-500 mt-0.5">NMID: {qrisSettings.nmid}</p>}
+              <p className="text-xs text-gray-500 mt-0.5">GoPay, OVO, DANA, ShopeePay, BSI, dll</p>
               <p className="text-lg font-bold text-gray-900 mt-2">Rp 99.000</p>
             </div>
             <p className="text-xs text-gray-400 mt-3">

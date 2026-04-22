@@ -93,3 +93,32 @@
   --porto-text: #eaeaea;
   --porto-accent: #16213e;
 }
+
+/* ── Global Print Styles ── */
+@media print {
+  /* Sembunyikan sidebar, navbar, toolbar saat cetak */
+  aside,
+  nav,
+  .no-print,
+  footer {
+    display: none !important;
+    visibility: hidden !important;
+  }
+
+  /* Reset margin body */
+  body {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: white !important;
+  }
+
+  /* Pastikan konten cetak terlihat */
+  #cv-print,
+  #cv-print *,
+  #letter-print,
+  #letter-print *,
+  #letter-wrap,
+  #letter-wrap * {
+    visibility: visible !important;
+  }
+}

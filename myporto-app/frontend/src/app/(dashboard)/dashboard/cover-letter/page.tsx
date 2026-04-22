@@ -73,16 +73,18 @@ export default function CoverLetterPage() {
       {/* Print styles — harus di luar wrapper agar tidak tersembunyi */}
       <style>{`
         @media print {
-          .no-print { display: none !important; }
-          .print-only { display: block !important; }
+          aside, nav, .no-print { display: none !important; visibility: hidden !important; }
           body { margin: 0 !important; background: white !important; }
-          #letter-wrap { padding: 0 !important; margin: 0 !important; background: white !important; }
+          #letter-wrap { padding: 0 !important; margin: 0 !important; background: white !important; visibility: visible !important; }
+          #letter-wrap * { visibility: visible !important; }
           #letter-print {
             box-shadow: none !important;
             width: 21cm !important;
             min-height: 29.7cm !important;
             margin: 0 auto !important;
-            page-break-after: avoid !important;
+            position: fixed !important;
+            top: 0 !important;
+            left: 0 !important;
           }
           @page { size: A4 portrait; margin: 0; }
         }

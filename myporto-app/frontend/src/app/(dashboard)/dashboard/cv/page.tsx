@@ -132,9 +132,18 @@ export default function CVPage() {
             <div className="mt-5 pt-5 border-t border-white/20 flex flex-wrap gap-x-6 gap-y-2 text-sm opacity-80">
               {profile?.no_whatsapp && <span>📱 {profile.no_whatsapp}</span>}
               {profile?.email_publik && <span>✉ {profile.email_publik}</span>}
-              {profile?.alamat_koordinat && <span>📍 {profile.alamat_koordinat}</span>}
-              {profile?.linkedin_url && <span>🔗 LinkedIn</span>}
-              {profile?.github_url && <span>💻 GitHub</span>}
+              {profile?.alamat_koordinat && !profile.alamat_koordinat.startsWith('http') && (
+                <span>📍 {profile.alamat_koordinat}</span>
+              )}
+              {profile?.linkedin_url && (
+                <span>🔗 {profile.linkedin_url.replace('https://www.', '').replace('https://', '')}</span>
+              )}
+              {profile?.github_url && (
+                <span>💻 {profile.github_url.replace('https://www.', '').replace('https://', '')}</span>
+              )}
+              {profile?.website_url && (
+                <span>🌐 {profile.website_url.replace('https://www.', '').replace('https://', '')}</span>
+              )}
             </div>
           </div>
 
@@ -314,9 +323,10 @@ export default function CVPage() {
       {/* Print styles */}
       <style>{`
         @media print {
-          body * { visibility: hidden; }
-          #cv-print, #cv-print * { visibility: visible; }
-          #cv-print { position: fixed; top: 0; left: 0; width: 100%; }
+          aside, nav, header, .no-print { display: none !important; visibility: hidden !important; }
+          body { margin: 0 !important; }
+          #cv-print { position: fixed !important; top: 0 !important; left: 0 !important; width: 100% !important; visibility: visible !important; }
+          #cv-print * { visibility: visible !important; }
           @page { margin: 0; size: A4; }
         }
       `}</style>

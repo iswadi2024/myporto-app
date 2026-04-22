@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 async function main() {
   console.log('🔧 Resolving failed migrations...');
 
-  // Hapus record migration bermasalah berdasarkan nama — tanpa kondisi apapun
+  // Hapus semua record migration TTL (berhasil maupun gagal)
   const toDelete = [
     '20260422000001_add_ttl_to_profile',
     '20260422120000_ensure_ttl_columns',
@@ -18,13 +18,13 @@ async function main() {
       const result = await prisma.$executeRawUnsafe(
         `DELETE FROM _prisma_migrations WHERE migration_name = ?`, name
       );
-      console.log(`✅ Deleted migration record: ${name} (${result} rows)`);
+      console.log(`✅ Deleted: ${name} (${result} rows)`);
     } catch (e: any) {
-      console.log(`⚠️  Could not delete ${name}: ${e.message}`);
+      console.log(`⚠️  ${name}: ${e.message}`);
     }
   }
 
-  // Tambahkan kolom TTL jika belum ada
+  // Cek dan tambahkan kolom yang belum ada (skip jika sudah ada)
   for (const [col, def] of [
     ['tempat_lahir', 'VARCHAR(100) NULL'],
     ['tanggal_lahir', 'DATE NULL'],
@@ -34,15 +34,30 @@ async function main() {
         `SELECT COUNT(*) as cnt FROM INFORMATION_SCHEMA.COLUMNS 
          WHERE TABLE_SCHEMA = DATABASE() AND TABLE_NAME = 'profiles' AND COLUMN_NAME = ?`, col
       );
-      const exists = Number(rows[0]?.cnt || rows[0]?.CNT || 0) > 0;
-      if (!exists) {
+      const cnt = Number(Object.values(rows[0])[0]);
+      if (cnt === 0) {
         await prisma.$executeRawUnsafe(`ALTER TABLE profiles ADD COLUMN ${col} ${def}`);
-        console.log(`✅ Added column: ${col}`);
+        console.log(`✅ Added: ${col}`);
       } else {
-        console.log(`ℹ️  Column exists: ${col}`);
+        console.log(`ℹ️  Already exists: ${col}`);
       }
     } catch (e: any) {
-      console.log(`⚠️  Column ${col}: ${e.message}`);
+      console.log(`⚠️  ${col}: ${e.message}`);
+    }
+  }
+
+  // Tandai kedua migration sebagai berhasil
+  for (const name of toDelete) {
+    try {
+      const now = new Date().toISOString().slice(0, 19).replace('T', ' ');
+      await prisma.$executeRawUnsafe(
+        `INSERT INTO _prisma_migrations (id, checksum, finished_at, migration_name, logs, rolled_back_at, started_at, applied_steps_count)
+         VALUES (UUID(), 'manual_fix', ?, ?, NULL, NULL, ?, 1)`,
+        now, name, now
+      );
+      console.log(`✅ Marked as applied: ${name}`);
+    } catch (e: any) {
+      console.log(`⚠️  Mark ${name}: ${e.message}`);
     }
   }
 

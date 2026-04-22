@@ -36,6 +36,8 @@ model Profile {
   bio_singkat      String?  @db.Text
   foto_closeup     String?  @db.VarChar(255)
   foto_fullbody    String?  @db.VarChar(255)
+  tempat_lahir     String?  @db.VarChar(100)
+  tanggal_lahir    DateTime? @db.Date
   no_whatsapp      String?  @db.VarChar(20)
   alamat_koordinat String?  @db.VarChar(255)
   email_publik     String?  @db.VarChar(100)

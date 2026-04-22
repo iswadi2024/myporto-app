@@ -16,6 +16,8 @@ export interface Profile {
   bio_singkat?: string;
   foto_closeup?: string;
   foto_fullbody?: string;
+  tempat_lahir?: string;
+  tanggal_lahir?: string;
   no_whatsapp?: string;
   alamat_koordinat?: string;
   email_publik?: string;
@@ -28,11 +30,13 @@ export interface Profile {
 export interface Education {
   id: number;
   user_id: number;
+  jenjang?: string;
   institusi: string;
   gelar?: string;
   jurusan?: string;
   tahun_masuk?: number;
   tahun_lulus?: number;
+  ipk?: number;
   deskripsi?: string;
 }
 

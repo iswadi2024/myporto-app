@@ -8,11 +8,16 @@ import { formatDate } from '@/lib/utils';
 import { Printer, Download } from '@/components/ui/icons';
 
 const THEMES = [
-  { id: 'blue', label: 'Biru Profesional', accent: '#2563eb', header: '#1e3a8a', light: '#eff6ff' },
-  { id: 'green', label: 'Hijau Elegan', accent: '#16a34a', header: '#14532d', light: '#f0fdf4' },
-  { id: 'purple', label: 'Ungu Modern', accent: '#7c3aed', header: '#4c1d95', light: '#f5f3ff' },
-  { id: 'slate', label: 'Abu Minimalis', accent: '#475569', header: '#1e293b', light: '#f8fafc' },
-  { id: 'rose', label: 'Merah Berani', accent: '#e11d48', header: '#881337', light: '#fff1f2' },
+  { id: 'blue', label: 'Biru Profesional', accent: '#2563eb', header: '#1e3a8a', light: '#eff6ff', gradient: 'linear-gradient(135deg, #1e3a8a 0%, #2563eb 100%)' },
+  { id: 'green', label: 'Hijau Elegan', accent: '#16a34a', header: '#14532d', light: '#f0fdf4', gradient: 'linear-gradient(135deg, #14532d 0%, #16a34a 100%)' },
+  { id: 'purple', label: 'Ungu Modern', accent: '#7c3aed', header: '#4c1d95', light: '#f5f3ff', gradient: 'linear-gradient(135deg, #4c1d95 0%, #7c3aed 100%)' },
+  { id: 'slate', label: 'Abu Minimalis', accent: '#475569', header: '#1e293b', light: '#f8fafc', gradient: 'linear-gradient(135deg, #1e293b 0%, #475569 100%)' },
+  { id: 'rose', label: 'Merah Berani', accent: '#e11d48', header: '#881337', light: '#fff1f2', gradient: 'linear-gradient(135deg, #881337 0%, #e11d48 100%)' },
+  { id: 'ocean', label: 'Ocean Gradasi', accent: '#0891b2', header: '#164e63', light: '#ecfeff', gradient: 'linear-gradient(135deg, #164e63 0%, #0891b2 50%, #06b6d4 100%)' },
+  { id: 'sunset', label: 'Sunset Gradasi', accent: '#ea580c', header: '#7c2d12', light: '#fff7ed', gradient: 'linear-gradient(135deg, #7c2d12 0%, #ea580c 50%, #f59e0b 100%)' },
+  { id: 'forest', label: 'Forest Gradasi', accent: '#15803d', header: '#14532d', light: '#f0fdf4', gradient: 'linear-gradient(135deg, #14532d 0%, #15803d 50%, #4ade80 100%)' },
+  { id: 'royal', label: 'Royal Gradasi', accent: '#6d28d9', header: '#2e1065', light: '#faf5ff', gradient: 'linear-gradient(135deg, #2e1065 0%, #6d28d9 50%, #a78bfa 100%)' },
+  { id: 'midnight', label: 'Midnight Dark', accent: '#818cf8', header: '#0f172a', light: '#f8fafc', gradient: 'linear-gradient(135deg, #0f172a 0%, #1e1b4b 50%, #312e81 100%)' },
 ];
 
 export default function CVPage() {
@@ -67,16 +72,17 @@ export default function CVPage() {
           </div>
 
           {/* Theme picker */}
-          <div className="flex items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="text-xs text-gray-500 font-medium">Tema:</span>
-            <div className="flex gap-1.5">
+            <div className="flex gap-1.5 flex-wrap">
               {THEMES.map((t) => (
                 <button key={t.id} onClick={() => setSelectedTheme(t)}
                   title={t.label}
-                  className={`w-6 h-6 rounded-full border-2 transition-all ${selectedTheme.id === t.id ? 'border-gray-800 scale-110' : 'border-transparent'}`}
-                  style={{ backgroundColor: t.accent }} />
+                  className={`w-7 h-7 rounded-full border-2 transition-all ${selectedTheme.id === t.id ? 'border-gray-800 scale-110 shadow-md' : 'border-transparent'}`}
+                  style={{ background: t.gradient }} />
               ))}
             </div>
+            <span className="text-xs text-gray-400 ml-1">{selectedTheme.label}</span>
           </div>
 
           <div className="flex gap-2">
@@ -96,7 +102,7 @@ export default function CVPage() {
           style={{ minHeight: '297mm', fontFamily: 'Arial, sans-serif' }}>
 
           {/* Header */}
-          <div style={{ backgroundColor: selectedTheme.header }} className="text-white p-8 print:p-6">
+          <div style={{ background: selectedTheme.gradient }} className="text-white p-8 print:p-6">
             <div className="flex items-start gap-6">
               {/* Photo */}
               {profile?.foto_closeup ? (

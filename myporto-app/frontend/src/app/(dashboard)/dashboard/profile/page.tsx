@@ -147,6 +147,14 @@ export default function ProfilePage() {
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Nama Lengkap *</label>
               <input {...register('nama_lengkap', { required: true })} className={inputCls} placeholder="Nama lengkap Anda" />
             </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Tempat Lahir</label>
+              <input {...register('tempat_lahir')} className={inputCls} placeholder="Jakarta" />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">Tanggal Lahir</label>
+              <input {...register('tanggal_lahir')} type="date" className={inputCls} />
+            </div>
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Bio Singkat</label>
               <textarea {...register('bio_singkat')} rows={3} className={inputCls} placeholder="Ceritakan tentang diri Anda secara singkat..." />

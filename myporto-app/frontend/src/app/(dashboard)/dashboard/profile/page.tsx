@@ -86,10 +86,15 @@ export default function ProfilePage() {
   useEffect(() => {
     api.get('/profile').then((res) => {
       if (res.data.profile) {
-        reset(res.data.profile);
+        const p = res.data.profile;
+        // Format tanggal_lahir ke YYYY-MM-DD untuk input type="date"
+        if (p.tanggal_lahir) {
+          p.tanggal_lahir = p.tanggal_lahir.split('T')[0];
+        }
+        reset(p);
         setPhotos({
-          closeup: res.data.profile.foto_closeup || '',
-          fullbody: res.data.profile.foto_fullbody || '',
+          closeup: p.foto_closeup || '',
+          fullbody: p.foto_fullbody || '',
         });
       }
     }).catch(() => {});

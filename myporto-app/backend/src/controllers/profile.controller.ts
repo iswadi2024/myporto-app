@@ -20,6 +20,8 @@ export const upsertProfile = async (req: AuthRequest, res: Response): Promise<vo
     const {
       nama_lengkap,
       bio_singkat,
+      tempat_lahir,
+      tanggal_lahir,
       no_whatsapp,
       alamat_koordinat,
       email_publik,
@@ -29,31 +31,24 @@ export const upsertProfile = async (req: AuthRequest, res: Response): Promise<vo
       website_url,
     } = req.body;
 
+    const data = {
+      nama_lengkap,
+      bio_singkat: bio_singkat || null,
+      tempat_lahir: tempat_lahir || null,
+      tanggal_lahir: tanggal_lahir ? new Date(tanggal_lahir) : null,
+      no_whatsapp: no_whatsapp || null,
+      alamat_koordinat: alamat_koordinat || null,
+      email_publik: email_publik || null,
+      instagram_url: instagram_url || null,
+      linkedin_url: linkedin_url || null,
+      github_url: github_url || null,
+      website_url: website_url || null,
+    };
+
     const profile = await prisma.profile.upsert({
       where: { user_id: req.user!.id },
-      update: {
-        nama_lengkap,
-        bio_singkat,
-        no_whatsapp,
-        alamat_koordinat,
-        email_publik,
-        instagram_url,
-        linkedin_url,
-        github_url,
-        website_url,
-      },
-      create: {
-        user_id: req.user!.id,
-        nama_lengkap,
-        bio_singkat,
-        no_whatsapp,
-        alamat_koordinat,
-        email_publik,
-        instagram_url,
-        linkedin_url,
-        github_url,
-        website_url,
-      },
+      update: data,
+      create: { user_id: req.user!.id, ...data },
     });
 
     res.json({ message: 'Profile updated successfully', profile });

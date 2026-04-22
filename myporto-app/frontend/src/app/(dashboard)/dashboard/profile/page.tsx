@@ -17,6 +17,11 @@ function PhotoUpload({
   const [uploading, setUploading] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
+  // Sync preview saat current berubah (setelah data dari API datang)
+  useEffect(() => {
+    if (current) setPreview(current);
+  }, [current]);
+
   const handleFile = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;

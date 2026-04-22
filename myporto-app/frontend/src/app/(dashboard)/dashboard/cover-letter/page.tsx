@@ -51,11 +51,16 @@ export default function CoverLetterPage() {
     api.get('/profile').then((res) => setProfile(res.data.profile || null));
   }, []);
 
+  // Fallback: jika profile dari API tidak punya TTL, coba dari store
+  const profileData = profile || user?.profile || null;
   const pendidikanTerakhir = education[0];
   const tanggalSurat = formatTanggal(today);
-  const alamatTeks = profile?.alamat_koordinat?.startsWith('http') ? '' : (profile?.alamat_koordinat || '');
-  const kotaAsal = kotaOverride || extractKota(profile?.alamat_koordinat);
-  const ttl = formatTTL(profile?.tempat_lahir, profile?.tanggal_lahir);
+
+  // Alamat: hanya tampilkan teks, bukan URL
+  const alamatRaw = profileData?.alamat_koordinat || '';
+  const alamatTeks = alamatRaw.startsWith('http') ? '' : alamatRaw;
+  const kotaAsal = kotaOverride || extractKota(profileData?.alamat_koordinat);
+  const ttl = formatTTL((profileData as any)?.tempat_lahir, (profileData as any)?.tanggal_lahir);
   const isReady = tujuanPerusahaan.trim() && posisi.trim();
 
   const addLampiran = () => {
@@ -161,8 +166,8 @@ export default function CoverLetterPage() {
 
           {/* Info sinkron */}
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-700">
-            <strong>Data profil:</strong> {profile?.nama_lengkap || '-'} · TTL: {ttl} · WA: {profile?.no_whatsapp || '-'}
-            {(!profile?.tempat_lahir || !profile?.tanggal_lahir) && (
+            <strong>Data profil:</strong> {profileData?.nama_lengkap || '-'} · TTL: {ttl} · WA: {profileData?.no_whatsapp || '-'}
+            {(!(profileData as any)?.tempat_lahir || !(profileData as any)?.tanggal_lahir) && (
               <span className="ml-2 text-amber-600">⚠ <a href="/dashboard/profile" className="underline">Lengkapi TTL di Profil</a></span>
             )}
           </div>
@@ -236,13 +241,13 @@ export default function CoverLetterPage() {
               <table style={{ marginLeft: '1.5cm', marginBottom: '0.5cm', borderCollapse: 'separate', borderSpacing: '0 2px' }}>
                 <tbody>
                   {[
-                    ['Nama Lengkap', profile?.nama_lengkap || '-'],
+                    ['Nama Lengkap', profileData?.nama_lengkap || '-'],
                     ['Tempat, Tanggal Lahir', ttl],
                     ['Pendidikan Terakhir', pendidikanTerakhir
                       ? `${pendidikanTerakhir.jenjang ? pendidikanTerakhir.jenjang + ' - ' : ''}${pendidikanTerakhir.gelar || ''} ${pendidikanTerakhir.jurusan ? '- ' + pendidikanTerakhir.jurusan : ''} (${pendidikanTerakhir.institusi})`.trim()
                       : '-'],
-                    ['No. Telepon / WA', profile?.no_whatsapp || '-'],
-                    ['Email', profile?.email_publik || '-'],
+                    ['No. Telepon / WA', profileData?.no_whatsapp || '-'],
+                    ['Email', profileData?.email_publik || '-'],
                     ['Alamat', alamatTeks || '-'],
                   ].map(([label, value]) => (
                     <tr key={label}>
@@ -285,7 +290,7 @@ export default function CoverLetterPage() {
                   <div>Hormat saya,</div>
                   <div style={{ height: '2cm' }} />
                   <div style={{ fontWeight: 'bold', borderTop: '1px solid #333', paddingTop: '4px' }}>
-                    {profile?.nama_lengkap || '[Nama Lengkap]'}
+                    {profileData?.nama_lengkap || '[Nama Lengkap]'}
                   </div>
                 </div>
               </div>

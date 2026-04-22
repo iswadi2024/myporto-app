@@ -4,7 +4,7 @@ import { useEffect, useState, useRef } from 'react';
 import { CheckCircle, Clock, XCircle, Upload } from '@/components/ui/icons';
 import api from '@/lib/api';
 import { useAuthStore } from '@/lib/store';
-import { getPortfolioUrl } from '@/lib/utils';
+import { getPortfolioUrl, getPortfolioFullUrl } from '@/lib/utils';
 
 interface Payment {
   id: number;
@@ -140,7 +140,7 @@ export default function PaymentPage() {
             <p className="text-green-700 mb-6">Portofolio Anda dapat diakses publik di:</p>
             <a href={getPortfolioUrl(user.username)} target="_blank" rel="noopener noreferrer"
               className="inline-flex items-center gap-2 bg-green-600 text-white px-6 py-3 rounded-xl font-semibold hover:bg-green-700 transition-colors text-lg">
-              🌐 {getPortfolioUrl(user.username)}
+              🌐 {getPortfolioFullUrl(user.username)}
             </a>
           </div>
         </div>

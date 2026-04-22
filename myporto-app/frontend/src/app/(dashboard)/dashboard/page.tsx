@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import Link from 'next/link';
 import { User, GraduationCap, Briefcase, Award, Palette, CreditCard, ExternalLink } from '@/components/ui/icons';
 import { useAuthStore } from '@/lib/store';
-import { getPortfolioUrl } from '@/lib/utils';
+import { getPortfolioUrl, getPortfolioFullUrl } from '@/lib/utils';
 import api from '@/lib/api';
 
 interface DashboardStats {
@@ -75,7 +75,7 @@ export default function DashboardPage() {
             <p className="font-semibold text-green-800">✓ Portofolio Anda sudah aktif!</p>
             <p className="text-sm text-green-700 mt-1">
               Link publik Anda:{' '}
-              <span className="font-medium">{getPortfolioUrl(user?.username || '')}</span>
+              <span className="font-medium">{getPortfolioFullUrl(user?.username || '')}</span>
             </p>
           </div>
           <a

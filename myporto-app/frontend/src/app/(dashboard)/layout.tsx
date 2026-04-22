@@ -10,7 +10,7 @@ import {
 } from '@/components/ui/icons';
 import { useAuthStore } from '@/lib/store';
 import api from '@/lib/api';
-import { cn, getPortfolioUrl } from '@/lib/utils';
+import { cn, getPortfolioUrl, getPortfolioFullUrl } from '@/lib/utils';
 
 const navItems = [
   { href: '/dashboard', label: 'Dashboard', icon: LayoutDashboard, color: 'text-blue-500' },

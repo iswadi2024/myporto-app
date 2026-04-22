@@ -14,8 +14,16 @@ export function formatDate(date: string | Date | null): string {
 }
 
 export function getPortfolioUrl(username: string): string {
-  const domain = process.env.NEXT_PUBLIC_APP_DOMAIN || 'myporto.id';
-  return `https://${username}.${domain}`;
+  // Gunakan path /p/username — bekerja di semua environment (Vercel, localhost)
+  // Untuk full URL gunakan: window.location.origin + getPortfolioUrl(username)
+  return `/p/${username}`;
+}
+
+export function getPortfolioFullUrl(username: string): string {
+  if (typeof window !== 'undefined') {
+    return `${window.location.origin}/p/${username}`;
+  }
+  return `/p/${username}`;
 }
 
 export function getWhatsAppUrl(phone: string, message?: string): string {

@@ -1,1 +1,1 @@
-web: npm run build && npx prisma migrate deploy && npx ts-node --transpile-only prisma/reset-admin.ts && npx ts-node --transpile-only src/index.ts
+web: npm run build && npx ts-node --transpile-only prisma/fix-migration.ts && npx prisma migrate deploy && npx ts-node --transpile-only prisma/reset-admin.ts && npx ts-node --transpile-only src/index.ts

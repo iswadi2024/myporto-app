@@ -127,6 +127,67 @@ export default function LandingPage() {
         </div>
       </section>
 
+      {/* ── Interview Tips ── */}
+      <section className="relative overflow-hidden py-20 sm:py-28">
+        {/* Background gradient */}
+        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-blue-900 to-slate-900" />
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
+          <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl" />
+        </div>
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
+          <div className="text-center mb-14">
+            <div className="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-400/30 text-amber-300 px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
+              💡 Tips Karir
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
+              Rahasia Sukses{' '}
+              <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
+                Interview Kerja
+              </span>
+            </h2>
+            <p className="text-slate-400 max-w-xl mx-auto">
+              Persiapkan diri Anda dengan tips terbukti dari para profesional HR
+            </p>
+          </div>
+
+          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
+            {[
+              { emoji: '📋', color: 'from-blue-500 to-cyan-500', bg: 'bg-blue-500/10 border-blue-500/20', title: 'Riset Perusahaan', tip: 'Pelajari visi, misi, dan produk perusahaan sebelum interview. Recruiter sangat terkesan dengan kandidat yang tahu tentang perusahaan mereka.', tag: 'Persiapan' },
+              { emoji: '🎯', color: 'from-purple-500 to-pink-500', bg: 'bg-purple-500/10 border-purple-500/20', title: 'Metode STAR', tip: 'Jawab pertanyaan behavioral dengan Situation, Task, Action, Result. Ceritakan pengalaman nyata yang relevan dengan posisi yang dilamar.', tag: 'Teknik Menjawab' },
+              { emoji: '💼', color: 'from-amber-500 to-orange-500', bg: 'bg-amber-500/10 border-amber-500/20', title: 'Portofolio Digital', tip: 'Bagikan link portofolio online Anda sebelum interview. Recruiter yang melihat portofolio Anda lebih dulu akan lebih tertarik memanggil Anda.', tag: 'Personal Branding' },
+              { emoji: '🗣️', color: 'from-green-500 to-emerald-500', bg: 'bg-green-500/10 border-green-500/20', title: 'Latihan Berbicara', tip: 'Rekam diri Anda menjawab pertanyaan umum. Perhatikan intonasi, kecepatan bicara, dan bahasa tubuh. Latihan membuat sempurna.', tag: 'Komunikasi' },
+              { emoji: '❓', color: 'from-rose-500 to-red-500', bg: 'bg-rose-500/10 border-rose-500/20', title: 'Siapkan Pertanyaan', tip: 'Selalu siapkan 2-3 pertanyaan untuk interviewer. Ini menunjukkan antusiasme dan keseriusan Anda terhadap posisi tersebut.', tag: 'Strategi' },
+              { emoji: '⏰', color: 'from-teal-500 to-cyan-500', bg: 'bg-teal-500/10 border-teal-500/20', title: 'Tepat Waktu', tip: 'Datang 10-15 menit lebih awal. Untuk interview online, test koneksi dan peralatan 30 menit sebelumnya. Keterlambatan adalah kesan pertama yang buruk.', tag: 'Profesionalisme' },
+            ].map((item) => (
+              <div key={item.title} className={`relative bg-white/5 backdrop-blur-sm border rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 group ${item.bg}`}>
+                <span className={`inline-block text-xs font-bold px-2.5 py-1 rounded-full mb-4 bg-gradient-to-r ${item.color} text-white`}>{item.tag}</span>
+                <div className="flex items-start gap-3 mb-3">
+                  <span className="text-3xl flex-shrink-0">{item.emoji}</span>
+                  <h3 className="font-bold text-white text-lg leading-tight">{item.title}</h3>
+                </div>
+                <p className="text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors">{item.tip}</p>
+                <div className={`absolute bottom-0 left-6 right-6 h-0.5 rounded-full bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
+              </div>
+            ))}
+          </div>
+
+          <div className="relative bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-3xl p-8 text-center overflow-hidden">
+            <div className="relative">
+              <p className="text-3xl mb-3">🚀</p>
+              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">Portofolio Online = Nilai Plus di Mata Recruiter</h3>
+              <p className="text-slate-400 mb-6 max-w-lg mx-auto text-sm">
+                Kandidat dengan portofolio digital profesional <strong className="text-amber-400">3x lebih sering</strong> dipanggil interview dibanding yang hanya mengirim CV biasa.
+              </p>
+              <Link href="/register" className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-amber-500/30 hover:-translate-y-0.5">
+                Buat Portofolio Sekarang <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ── Features ── */}
       <section className="max-w-6xl mx-auto px-4 sm:px-6 py-20 sm:py-28">
         <div className="text-center mb-14">
@@ -178,130 +239,6 @@ export default function LandingPage() {
               </div>
             );
           })}
-        </div>
-      </section>
-
-      {/* ── Interview Tips ── */}
-      <section className="relative overflow-hidden py-20 sm:py-28">
-        {/* Background gradient */}
-        <div className="absolute inset-0 bg-gradient-to-br from-indigo-950 via-blue-900 to-slate-900" />
-        <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-0 left-1/4 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-0 right-1/4 w-72 h-72 bg-indigo-500/10 rounded-full blur-3xl" />
-        </div>
-
-        <div className="relative max-w-6xl mx-auto px-4 sm:px-6">
-          <div className="text-center mb-14">
-            <div className="inline-flex items-center gap-2 bg-amber-400/20 border border-amber-400/30 text-amber-300 px-4 py-1.5 rounded-full text-sm font-semibold mb-4">
-              💡 Tips Karir
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">
-              Rahasia Sukses{' '}
-              <span className="bg-gradient-to-r from-amber-400 to-orange-400 bg-clip-text text-transparent">
-                Interview Kerja
-              </span>
-            </h2>
-            <p className="text-slate-400 max-w-xl mx-auto">
-              Persiapkan diri Anda dengan tips terbukti dari para profesional HR
-            </p>
-          </div>
-
-          {/* Tips grid */}
-          <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-5 mb-12">
-            {[
-              {
-                emoji: '📋',
-                color: 'from-blue-500 to-cyan-500',
-                bg: 'bg-blue-500/10 border-blue-500/20',
-                title: 'Riset Perusahaan',
-                tip: 'Pelajari visi, misi, dan produk perusahaan sebelum interview. Recruiter sangat terkesan dengan kandidat yang tahu tentang perusahaan mereka.',
-                tag: 'Persiapan',
-              },
-              {
-                emoji: '🎯',
-                color: 'from-purple-500 to-pink-500',
-                bg: 'bg-purple-500/10 border-purple-500/20',
-                title: 'Metode STAR',
-                tip: 'Jawab pertanyaan behavioral dengan Situation, Task, Action, Result. Ceritakan pengalaman nyata yang relevan dengan posisi yang dilamar.',
-                tag: 'Teknik Menjawab',
-              },
-              {
-                emoji: '💼',
-                color: 'from-amber-500 to-orange-500',
-                bg: 'bg-amber-500/10 border-amber-500/20',
-                title: 'Portofolio Digital',
-                tip: 'Bagikan link portofolio online Anda sebelum interview. Recruiter yang melihat portofolio Anda lebih dulu akan lebih tertarik memanggil Anda.',
-                tag: 'Personal Branding',
-              },
-              {
-                emoji: '🗣️',
-                color: 'from-green-500 to-emerald-500',
-                bg: 'bg-green-500/10 border-green-500/20',
-                title: 'Latihan Berbicara',
-                tip: 'Rekam diri Anda menjawab pertanyaan umum. Perhatikan intonasi, kecepatan bicara, dan bahasa tubuh. Latihan membuat sempurna.',
-                tag: 'Komunikasi',
-              },
-              {
-                emoji: '❓',
-                color: 'from-rose-500 to-red-500',
-                bg: 'bg-rose-500/10 border-rose-500/20',
-                title: 'Siapkan Pertanyaan',
-                tip: 'Selalu siapkan 2-3 pertanyaan untuk interviewer. Ini menunjukkan antusiasme dan keseriusan Anda terhadap posisi tersebut.',
-                tag: 'Strategi',
-              },
-              {
-                emoji: '⏰',
-                color: 'from-teal-500 to-cyan-500',
-                bg: 'bg-teal-500/10 border-teal-500/20',
-                title: 'Tepat Waktu',
-                tip: 'Datang 10-15 menit lebih awal. Untuk interview online, test koneksi dan peralatan 30 menit sebelumnya. Keterlambatan adalah kesan pertama yang buruk.',
-                tag: 'Profesionalisme',
-              },
-            ].map((item) => (
-              <div
-                key={item.title}
-                className={`relative bg-white/5 backdrop-blur-sm border rounded-2xl p-6 hover:bg-white/10 transition-all duration-300 hover:-translate-y-1 group ${item.bg}`}
-              >
-                {/* Tag */}
-                <span className={`inline-block text-xs font-bold px-2.5 py-1 rounded-full mb-4 bg-gradient-to-r ${item.color} text-white`}>
-                  {item.tag}
-                </span>
-
-                <div className="flex items-start gap-3 mb-3">
-                  <span className="text-3xl flex-shrink-0">{item.emoji}</span>
-                  <h3 className="font-bold text-white text-lg leading-tight">{item.title}</h3>
-                </div>
-
-                <p className="text-slate-400 text-sm leading-relaxed group-hover:text-slate-300 transition-colors">
-                  {item.tip}
-                </p>
-
-                {/* Decorative gradient line */}
-                <div className={`absolute bottom-0 left-6 right-6 h-0.5 rounded-full bg-gradient-to-r ${item.color} opacity-0 group-hover:opacity-100 transition-opacity`} />
-              </div>
-            ))}
-          </div>
-
-          {/* CTA Banner */}
-          <div className="relative bg-gradient-to-r from-amber-500/20 to-orange-500/20 border border-amber-500/30 rounded-3xl p-8 text-center overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-r from-amber-600/5 to-orange-600/5" />
-            <div className="relative">
-              <p className="text-3xl mb-3">🚀</p>
-              <h3 className="text-xl sm:text-2xl font-bold text-white mb-2">
-                Portofolio Online = Nilai Plus di Mata Recruiter
-              </h3>
-              <p className="text-slate-400 mb-6 max-w-lg mx-auto text-sm">
-                Kandidat dengan portofolio digital profesional <strong className="text-amber-400">3x lebih sering</strong> dipanggil interview dibanding yang hanya mengirim CV biasa.
-              </p>
-              <Link
-                href="/register"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-amber-500 to-orange-500 hover:from-amber-400 hover:to-orange-400 text-white px-8 py-3.5 rounded-xl font-bold transition-all shadow-lg shadow-amber-500/30 hover:-translate-y-0.5"
-              >
-                Buat Portofolio Sekarang
-                <ArrowRight className="w-4 h-4" />
-              </Link>
-            </div>
-          </div>
         </div>
       </section>
 

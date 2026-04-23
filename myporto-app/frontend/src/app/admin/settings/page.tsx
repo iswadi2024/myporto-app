@@ -4,6 +4,62 @@ import { useEffect, useState, useRef } from 'react';
 import { Upload, Bell } from '@/components/ui/icons';
 import api from '@/lib/api';
 
+function AdminPasswordForm() {
+  const [current, setCurrent] = useState('');
+  const [newPwd, setNewPwd] = useState('');
+  const [confirm, setConfirm] = useState('');
+  const [saving, setSaving] = useState(false);
+  const [msg, setMsg] = useState<{ type: 'success' | 'error'; text: string } | null>(null);
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (newPwd !== confirm) { setMsg({ type: 'error', text: 'Password baru tidak cocok' }); return; }
+    if (newPwd.length < 8) { setMsg({ type: 'error', text: 'Password minimal 8 karakter' }); return; }
+    setSaving(true);
+    setMsg(null);
+    try {
+      await api.put('/auth/change-password', { current_password: current, new_password: newPwd });
+      setMsg({ type: 'success', text: '✓ Password berhasil diubah!' });
+      setCurrent(''); setNewPwd(''); setConfirm('');
+    } catch (err: any) {
+      setMsg({ type: 'error', text: err.response?.data?.error || 'Gagal mengubah password' });
+    } finally {
+      setSaving(false);
+    }
+  };
+
+  const inputCls = 'w-full border border-gray-200 bg-gray-50 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:bg-white transition-colors';
+
+  return (
+    <form onSubmit={handleSubmit} className="space-y-4 max-w-md">
+      {msg && (
+        <div className={`px-4 py-3 rounded-xl text-sm font-medium ${msg.type === 'success' ? 'bg-green-50 text-green-700 border border-green-200' : 'bg-red-50 text-red-700 border border-red-200'}`}>
+          {msg.text}
+        </div>
+      )}
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">Password Saat Ini</label>
+        <input type="password" value={current} onChange={e => setCurrent(e.target.value)} className={inputCls} placeholder="••••••••" required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">Password Baru</label>
+        <input type="password" value={newPwd} onChange={e => setNewPwd(e.target.value)} className={inputCls} placeholder="Minimal 8 karakter" required />
+      </div>
+      <div>
+        <label className="block text-sm font-medium text-gray-700 mb-1.5">Konfirmasi Password Baru</label>
+        <input type="password" value={confirm} onChange={e => setConfirm(e.target.value)} className={inputCls} placeholder="Ulangi password baru" required />
+        {confirm && newPwd !== confirm && <p className="text-xs text-red-500 mt-1">✗ Password tidak cocok</p>}
+        {confirm && newPwd === confirm && newPwd.length >= 8 && <p className="text-xs text-green-600 mt-1">✓ Password cocok</p>}
+      </div>
+      <button type="submit" disabled={saving || !current || !newPwd || !confirm || newPwd !== confirm}
+        className="bg-red-600 text-white px-6 py-2.5 rounded-xl text-sm font-semibold hover:bg-red-700 disabled:opacity-50 transition-colors">
+        {saving ? 'Menyimpan...' : '🔒 Ubah Password Admin'}
+      </button>
+      <p className="text-xs text-gray-400">Setelah mengubah password, Anda perlu login ulang.</p>
+    </form>
+  );
+}
+
 export default function AdminSettingsPage() {
   const [settings, setSettings] = useState<Record<string, string>>({});
   const [saving, setSaving] = useState<string | null>(null);
@@ -77,6 +133,15 @@ export default function AdminSettingsPage() {
       </div>
 
       <div className="max-w-3xl space-y-6">
+
+        {/* ── Keamanan Akun Admin ── */}
+        <div className="bg-white rounded-2xl border border-gray-200 p-6">
+          <h2 className="font-semibold text-gray-900 mb-1 flex items-center gap-2">
+            <span className="text-xl">🔐</span> Keamanan Akun Admin
+          </h2>
+          <p className="text-sm text-gray-500 mb-5">Ubah password akun admin untuk keamanan yang lebih baik</p>
+          <AdminPasswordForm />
+        </div>
 
         {/* ── QR QRIS ── */}
         <div className="bg-white rounded-2xl border border-gray-200 p-6">
@@ -207,20 +272,6 @@ export default function AdminSettingsPage() {
                 <li>Isi nomor WA admin (format 628xxx) → Simpan</li>
               </ol>
             </div>
-          </div>
-        </div>
-
-        {/* ── Akun Admin ── */}
-        <div className="bg-amber-50 border border-amber-200 rounded-2xl p-6">
-          <h2 className="font-semibold text-amber-900 mb-2 flex items-center gap-2">
-            🔐 Info Akun Admin
-          </h2>
-          <div className="text-sm text-amber-800 space-y-1">
-            <p><strong>Email:</strong> admin@myporto.id</p>
-            <p><strong>Password default:</strong> Admin@123456</p>
-            <p className="text-xs text-amber-600 mt-2">
-              ⚠ Jalankan <code className="bg-amber-100 px-1 rounded">npm run seed</code> di folder backend untuk membuat akun admin pertama kali.
-            </p>
           </div>
         </div>
 

@@ -6,15 +6,21 @@ dotenv.config();
 const prisma = new PrismaClient();
 
 async function main() {
-  const email = 'admin@myporto.id';
-  const password = 'Admin@123456'; // hardcoded, change after first login
-  const hashed = await bcrypt.hash(password, 12);
+  const email = process.env.ADMIN_EMAIL || 'admin@myporto.id';
+  const password = process.env.ADMIN_PASSWORD || 'Admin@123456';
 
-  // Always upsert — reset password setiap deploy
-  await prisma.user.upsert({
-    where: { email },
-    update: { password: hashed },
-    create: {
+  const existing = await prisma.user.findUnique({ where: { email } });
+
+  if (existing) {
+    // Sudah ada — JANGAN reset password, biarkan apa adanya
+    console.log(`ℹ️  Admin already exists: ${email} — password not changed`);
+    return;
+  }
+
+  // Baru pertama kali — buat akun admin
+  const hashed = await bcrypt.hash(password, 12);
+  await prisma.user.create({
+    data: {
       email,
       username: 'admin',
       password: hashed,
@@ -23,7 +29,7 @@ async function main() {
       profile: { create: { nama_lengkap: 'Super Admin' } },
     },
   });
-  console.log(`✅ Admin upserted: ${email}`);
+  console.log(`✅ Admin created: ${email}`);
 }
 
 main()

@@ -78,20 +78,34 @@ export default function CoverLetterPage() {
       {/* Print styles — harus di luar wrapper agar tidak tersembunyi */}
       <style>{`
         @media print {
-          aside, nav, .no-print { display: none !important; visibility: hidden !important; }
+          aside, nav, .no-print { display: none !important; }
           body { margin: 0 !important; background: white !important; }
-          #letter-wrap { padding: 0 !important; margin: 0 !important; background: white !important; visibility: visible !important; }
+          
+          /* Sembunyikan semua kecuali surat */
+          body > * { display: none !important; }
+          #letter-wrap { display: block !important; }
           #letter-wrap * { visibility: visible !important; }
+          
           #letter-print {
             box-shadow: none !important;
-            width: 21cm !important;
-            min-height: 29.7cm !important;
-            margin: 0 auto !important;
-            position: fixed !important;
-            top: 0 !important;
-            left: 0 !important;
+            position: static !important;
+            width: 100% !important;
+            min-height: auto !important;
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: visible !important;
           }
-          @page { size: A4 portrait; margin: 0; }
+          
+          /* Pastikan border tidak terpotong */
+          #letter-print > div[style*="border"] {
+            -webkit-print-color-adjust: exact !important;
+            print-color-adjust: exact !important;
+          }
+          
+          @page {
+            size: A4 portrait;
+            margin: 1cm;
+          }
         }
       `}</style>
 
@@ -175,35 +189,36 @@ export default function CoverLetterPage() {
 
         {/* Surat A4 */}
         <div id="letter-wrap" className="max-w-4xl mx-auto pb-8 px-4">
-          <div id="letter-print" className="bg-white shadow-2xl relative overflow-hidden"
+          <div id="letter-print" className="bg-white shadow-2xl relative"
             style={{
               fontFamily: '"Times New Roman", Times, serif',
               fontSize: '12pt',
               lineHeight: '1.8',
               color: '#111',
-              minHeight: '29.7cm',
-              width: '21cm',
+              minHeight: '27cm',
+              width: '19cm',
               margin: '0 auto',
               boxSizing: 'border-box' as const,
+              overflow: 'hidden',
             }}>
 
-            {/* Border dekoratif luar */}
-            <div style={{ position: 'absolute', inset: 0, border: '10px solid #1e3a8a', pointerEvents: 'none', zIndex: 1 }} />
-            <div style={{ position: 'absolute', inset: '13px', border: '2px solid #3b82f6', pointerEvents: 'none', zIndex: 1 }} />
-            <div style={{ position: 'absolute', inset: '17px', border: '1px solid #bfdbfe', pointerEvents: 'none', zIndex: 1 }} />
+            {/* Border dekoratif — dikurangi agar tidak terpotong */}
+            <div style={{ position: 'absolute', inset: 0, border: '8px solid #1e3a8a', pointerEvents: 'none', zIndex: 1, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as React.CSSProperties} />
+            <div style={{ position: 'absolute', inset: '11px', border: '2px solid #3b82f6', pointerEvents: 'none', zIndex: 1, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as React.CSSProperties} />
+            <div style={{ position: 'absolute', inset: '15px', border: '1px solid #bfdbfe', pointerEvents: 'none', zIndex: 1, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as React.CSSProperties} />
 
             {/* Ornamen sudut */}
             {([
-              { top: 6, left: 6, borderTop: '3px solid #f59e0b', borderLeft: '3px solid #f59e0b' },
-              { top: 6, right: 6, borderTop: '3px solid #f59e0b', borderRight: '3px solid #f59e0b' },
-              { bottom: 6, left: 6, borderBottom: '3px solid #f59e0b', borderLeft: '3px solid #f59e0b' },
-              { bottom: 6, right: 6, borderBottom: '3px solid #f59e0b', borderRight: '3px solid #f59e0b' },
+              { top: 4, left: 4, borderTop: '3px solid #f59e0b', borderLeft: '3px solid #f59e0b' },
+              { top: 4, right: 4, borderTop: '3px solid #f59e0b', borderRight: '3px solid #f59e0b' },
+              { bottom: 4, left: 4, borderBottom: '3px solid #f59e0b', borderLeft: '3px solid #f59e0b' },
+              { bottom: 4, right: 4, borderBottom: '3px solid #f59e0b', borderRight: '3px solid #f59e0b' },
             ] as React.CSSProperties[]).map((style, i) => (
-              <div key={i} style={{ position: 'absolute', width: 22, height: 22, zIndex: 2, ...style }} />
+              <div key={i} style={{ position: 'absolute', width: 20, height: 20, zIndex: 2, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact', ...style } as React.CSSProperties} />
             ))}
 
-            {/* Konten */}
-            <div style={{ padding: '2cm 2.5cm', position: 'relative', zIndex: 3 }}>
+            {/* Konten — padding lebih kecil agar muat */}
+            <div style={{ padding: '1.5cm 2cm', position: 'relative', zIndex: 3 }}>
 
               {/* Header */}
               <div style={{ textAlign: 'center', marginBottom: '0.6cm', paddingBottom: '0.3cm', borderBottom: '2px solid #1e3a8a' }}>
@@ -274,9 +289,15 @@ export default function CoverLetterPage() {
                 Sebagai bahan pertimbangan, bersama surat lamaran ini saya lampirkan:
               </div>
 
-              <ol style={{ marginLeft: '1.8cm', marginBottom: '0.5cm', paddingLeft: '0' }}>
+              <ol style={{ 
+                marginLeft: '1.5cm', 
+                marginBottom: '0.5cm', 
+                paddingLeft: '0.5cm',
+                listStyleType: 'decimal',
+                listStylePosition: 'outside',
+              }}>
                 {lampiran.map((item, i) => (
-                  <li key={i}>{item}</li>
+                  <li key={i} style={{ marginBottom: '2px', paddingLeft: '4px' }}>{item}</li>
                 ))}
               </ol>
 

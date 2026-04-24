@@ -138,7 +138,7 @@ export default function LokerPage() {
   });
 
   // Kota yang tersedia
-  const availableCities = [...new Set(ALL_JOBS.map(j => j.city))].filter(c => c !== 'Remote');
+  const availableCities = Array.from(new Set(ALL_JOBS.map(j => j.city))).filter(c => c !== 'Remote');
 
   return (
     <div className="space-y-6">

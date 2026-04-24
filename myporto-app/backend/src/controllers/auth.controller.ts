@@ -138,20 +138,18 @@ export const getMe = async (req: Request & { user?: { id: number } }, res: Respo
     const user = await prisma.user.findUnique({
       where: { id: req.user!.id },
       select: {
-        id: true,
-        email: true,
-        username: true,
-        role: true,
-        is_paid: true,
-        created_at: true,
-        profile: true,
-        appearance: true,
+        id: true, email: true, username: true, role: true,
+        is_paid: true, paid_until: true, created_at: true,
+        profile: true, appearance: true,
       },
     });
 
-    if (!user) {
-      res.status(404).json({ error: 'User not found' });
-      return;
+    if (!user) { res.status(404).json({ error: 'User not found' }); return; }
+
+    // Auto-expire: jika paid_until sudah lewat, set is_paid = false
+    if (user.is_paid && user.paid_until && new Date() > new Date(user.paid_until)) {
+      await prisma.user.update({ where: { id: user.id }, data: { is_paid: false } });
+      user.is_paid = false;
     }
 
     res.json({ user });

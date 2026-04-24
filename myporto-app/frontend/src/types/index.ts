@@ -4,6 +4,7 @@ export interface User {
   username: string;
   role: 'USER' | 'ADMIN';
   is_paid: boolean;
+  paid_until?: string; // tanggal expired subscription
   created_at: string;
   profile?: Profile;
   appearance?: AppearanceSetting;
@@ -13,6 +14,7 @@ export interface Profile {
   id: number;
   user_id: number;
   nama_lengkap: string;
+  nama_locked?: boolean; // true = nama tidak bisa diubah
   bio_singkat?: string;
   foto_closeup?: string;
   foto_fullbody?: string;

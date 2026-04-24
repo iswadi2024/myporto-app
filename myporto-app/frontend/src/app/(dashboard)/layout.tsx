@@ -23,6 +23,7 @@ const navItems = [
   { href: '/dashboard/cover-letter', label: 'Surat Lamaran', icon: Mail, color: 'text-rose-500' },
   { href: '/dashboard/payment', label: 'Pembayaran', icon: CreditCard, color: 'text-orange-500' },
   { href: '/dashboard/publish', label: 'Publikasi', icon: Globe, color: 'text-green-500' },
+  { href: '/dashboard/loker', label: 'Info Loker', icon: Briefcase, color: 'text-rose-500' },
   { href: '/dashboard/settings', label: 'Pengaturan Akun', icon: Settings, color: 'text-slate-400' },
 ];
 
@@ -77,12 +78,20 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
 
             {/* Status pill */}
             <div className={`mt-3 flex items-center gap-2 px-3 py-1.5 rounded-full text-xs font-medium w-fit ${
-              user.is_paid
+              user.is_paid && user.paid_until && new Date() <= new Date(user.paid_until)
                 ? 'bg-green-500/20 text-green-400 border border-green-500/30'
+                : user.is_paid
+                ? 'bg-red-500/20 text-red-400 border border-red-500/30'
                 : 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
             }`}>
-              <span className={`w-1.5 h-1.5 rounded-full ${user.is_paid ? 'bg-green-400' : 'bg-amber-400'}`} />
-              {user.is_paid ? 'Aktif & Publik' : 'Draft'}
+              <span className={`w-1.5 h-1.5 rounded-full ${
+                user.is_paid && user.paid_until && new Date() <= new Date(user.paid_until)
+                  ? 'bg-green-400' : user.is_paid ? 'bg-red-400' : 'bg-amber-400'
+              }`} />
+              {user.is_paid && user.paid_until && new Date() <= new Date(user.paid_until)
+                ? `Aktif s/d ${new Date(user.paid_until).toLocaleDateString('id-ID', { day: 'numeric', month: 'short' })}`
+                : user.is_paid ? 'Expired' : 'Draft'
+              }
             </div>
 
             {user.is_paid && (
@@ -100,7 +109,9 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
             const isActive = pathname === item.href;
             const isPublish = item.href === '/dashboard/publish';
             const isCvOrLetter = item.href === '/dashboard/cv' || item.href === '/dashboard/cover-letter';
-            const isLocked = (isPublish || isCvOrLetter) && !user?.is_paid;
+            // Terkunci jika belum bayar ATAU sudah expired
+            const isExpired = user?.paid_until ? new Date() > new Date(user.paid_until) : !user?.is_paid;
+            const isLocked = (isPublish || isCvOrLetter) && isExpired;
             return (
               <Link key={item.href} href={isLocked ? '/dashboard/payment' : item.href}
                 title={isLocked ? 'Aktifkan akun terlebih dahulu' : item.label}

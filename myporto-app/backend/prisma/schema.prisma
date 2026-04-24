@@ -15,6 +15,7 @@ model User {
   role       Role     @default(USER)
   is_paid    Boolean  @default(false)
   is_active  Boolean  @default(true)
+  paid_until DateTime? // null = belum bayar, tanggal = aktif sampai kapan
   deleted_at DateTime?
   created_at DateTime @default(now())
   updated_at DateTime @updatedAt
@@ -33,6 +34,7 @@ model Profile {
   id               Int      @id @default(autoincrement())
   user_id          Int      @unique
   nama_lengkap     String   @db.VarChar(100)
+  nama_locked      Boolean  @default(false) // true = nama tidak bisa diubah lagi
   bio_singkat      String?  @db.Text
   foto_closeup     String?  @db.VarChar(255)
   foto_fullbody    String?  @db.VarChar(255)

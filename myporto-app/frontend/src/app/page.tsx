@@ -293,7 +293,7 @@ export default function LandingPage() {
                 <span className="text-2xl font-semibold text-blue-200">Rp</span>
                 <span className="text-6xl font-bold">99.000</span>
               </div>
-              <p className="text-blue-200 text-sm">Bayar sekali, aktif selamanya</p>
+              <p className="text-blue-200 text-sm">Aktif selama 30 hari, perpanjang kapan saja</p>
             </div>
 
             <ul className="space-y-3 mb-8">

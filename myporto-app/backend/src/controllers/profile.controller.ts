@@ -18,21 +18,19 @@ export const getProfile = async (req: AuthRequest, res: Response): Promise<void>
 export const upsertProfile = async (req: AuthRequest, res: Response): Promise<void> => {
   try {
     const {
-      nama_lengkap,
-      bio_singkat,
-      tempat_lahir,
-      tanggal_lahir,
-      no_whatsapp,
-      alamat_koordinat,
-      email_publik,
-      instagram_url,
-      linkedin_url,
-      github_url,
-      website_url,
+      nama_lengkap, bio_singkat, tempat_lahir, tanggal_lahir,
+      no_whatsapp, alamat_koordinat, email_publik,
+      instagram_url, linkedin_url, github_url, website_url,
     } = req.body;
 
-    const data = {
-      nama_lengkap,
+    // Cek apakah nama sudah terkunci
+    const existing = await prisma.profile.findUnique({ where: { user_id: req.user!.id } });
+    if (existing?.nama_locked && nama_lengkap !== existing.nama_lengkap) {
+      res.status(400).json({ error: 'Nama lengkap tidak dapat diubah setelah dikunci' });
+      return;
+    }
+
+    const data: any = {
       bio_singkat: bio_singkat || null,
       tempat_lahir: tempat_lahir || null,
       tanggal_lahir: tanggal_lahir ? new Date(tanggal_lahir) : null,
@@ -45,10 +43,19 @@ export const upsertProfile = async (req: AuthRequest, res: Response): Promise<vo
       website_url: website_url || null,
     };
 
+    // Nama hanya bisa diset jika belum terkunci
+    if (!existing?.nama_locked) {
+      data.nama_lengkap = nama_lengkap;
+      // Kunci nama setelah pertama kali disimpan dengan nama yang valid
+      if (nama_lengkap && nama_lengkap.trim().length >= 2) {
+        data.nama_locked = true;
+      }
+    }
+
     const profile = await prisma.profile.upsert({
       where: { user_id: req.user!.id },
       update: data,
-      create: { user_id: req.user!.id, ...data },
+      create: { user_id: req.user!.id, nama_lengkap: nama_lengkap || '', ...data },
     });
 
     res.json({ message: 'Profile updated successfully', profile });

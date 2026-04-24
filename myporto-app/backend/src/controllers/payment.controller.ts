@@ -181,19 +181,17 @@ export const confirmPayment = async (req: Request, res: Response): Promise<void>
     const domain = process.env.APP_DOMAIN || 'myporto.id';
 
     if (action === 'approve') {
-      // Aktifkan akun dalam satu transaksi
+      const paidUntil = new Date();
+      paidUntil.setDate(paidUntil.getDate() + 30); // aktif 30 hari
+
       await prisma.$transaction([
         prisma.payment.update({
           where: { id: payment.id },
-          data: {
-            status: 'SUCCESS',
-            confirmed_at: new Date(),
-            catatan_admin: catatan || null,
-          },
+          data: { status: 'SUCCESS', confirmed_at: new Date(), catatan_admin: catatan || null },
         }),
         prisma.user.update({
           where: { id: payment.user_id },
-          data: { is_paid: true },
+          data: { is_paid: true, paid_until: paidUntil },
         }),
       ]);
 

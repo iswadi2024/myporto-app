@@ -155,7 +155,25 @@ export default function ProfilePage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="md:col-span-2">
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Nama Lengkap *</label>
-              <input {...register('nama_lengkap', { required: true })} className={inputCls} placeholder="Nama lengkap Anda" />
+              {user?.profile?.nama_locked ? (
+                <div className="flex items-center gap-3">
+                  <input
+                    value={user.profile.nama_lengkap}
+                    disabled
+                    className="w-full border border-slate-200 bg-slate-100 rounded-xl px-4 py-2.5 text-sm text-slate-500 cursor-not-allowed"
+                  />
+                  <span className="flex-shrink-0 text-xs bg-amber-100 text-amber-700 border border-amber-200 px-3 py-2 rounded-xl font-medium whitespace-nowrap">
+                    🔒 Terkunci
+                  </span>
+                </div>
+              ) : (
+                <>
+                  <input {...register('nama_lengkap', { required: true })} className={inputCls} placeholder="Nama lengkap Anda" />
+                  <div className="mt-2 bg-amber-50 border border-amber-200 rounded-xl px-4 py-3 text-xs text-amber-800">
+                    ⚠️ <strong>Perhatian:</strong> Nama lengkap hanya dapat disimpan <strong>satu kali</strong> dan tidak dapat diubah setelahnya. Pastikan penulisan nama sudah benar sebelum menyimpan.
+                  </div>
+                </>
+              )}
             </div>
             <div>
               <label className="block text-sm font-medium text-slate-700 mb-1.5">Tempat Lahir</label>

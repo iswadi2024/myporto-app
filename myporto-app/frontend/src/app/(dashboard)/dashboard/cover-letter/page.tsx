@@ -78,34 +78,21 @@ export default function CoverLetterPage() {
       {/* Print styles — harus di luar wrapper agar tidak tersembunyi */}
       <style>{`
         @media print {
+          /* Sembunyikan elemen UI */
           aside, nav, .no-print { display: none !important; }
+          
+          /* Reset body */
           body { margin: 0 !important; background: white !important; }
           
-          /* Sembunyikan semua kecuali surat */
-          body > * { display: none !important; }
-          #letter-wrap { display: block !important; }
-          #letter-wrap * { visibility: visible !important; }
+          /* Tampilkan hanya letter-wrap */
+          #letter-wrap { display: block !important; visibility: visible !important; }
+          #letter-print { visibility: visible !important; box-shadow: none !important; }
+          #letter-print * { visibility: visible !important; }
           
-          #letter-print {
-            box-shadow: none !important;
-            position: static !important;
-            width: 100% !important;
-            min-height: auto !important;
-            margin: 0 !important;
-            padding: 0 !important;
-            overflow: visible !important;
-          }
+          /* Warna border tercetak */
+          * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
           
-          /* Pastikan border tidak terpotong */
-          #letter-print > div[style*="border"] {
-            -webkit-print-color-adjust: exact !important;
-            print-color-adjust: exact !important;
-          }
-          
-          @page {
-            size: A4 portrait;
-            margin: 1cm;
-          }
+          @page { size: A4 portrait; margin: 1cm; }
         }
       `}</style>
 

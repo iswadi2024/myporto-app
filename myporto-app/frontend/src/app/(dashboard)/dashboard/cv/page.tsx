@@ -128,22 +128,40 @@ export default function CVPage() {
               </div>
             </div>
 
-            {/* Contact bar */}
-            <div className="mt-5 pt-5 border-t border-white/20 flex flex-wrap gap-x-6 gap-y-2 text-sm opacity-80">
-              {profile?.no_whatsapp && <span>📱 {profile.no_whatsapp}</span>}
-              {profile?.email_publik && <span>✉ {profile.email_publik}</span>}
-              {profile?.alamat_koordinat && !profile.alamat_koordinat.startsWith('http') && (
-                <span>📍 {profile.alamat_koordinat}</span>
-              )}
-              {profile?.linkedin_url && (
-                <span>🔗 {profile.linkedin_url.replace('https://www.', '').replace('https://', '')}</span>
-              )}
-              {profile?.github_url && (
-                <span>💻 {profile.github_url.replace('https://www.', '').replace('https://', '')}</span>
-              )}
-              {profile?.website_url && (
-                <span>🌐 {profile.website_url.replace('https://www.', '').replace('https://', '')}</span>
-              )}
+            {/* Contact bar — rapi dalam frame */}
+            <div className="mt-5 pt-4 border-t border-white/20">
+              <div className="flex flex-wrap gap-x-4 gap-y-1.5 text-xs">
+                {profile?.no_whatsapp && (
+                  <span className="flex items-center gap-1 opacity-90">
+                    <span>📱</span> {profile.no_whatsapp}
+                  </span>
+                )}
+                {profile?.email_publik && (
+                  <span className="flex items-center gap-1 opacity-90">
+                    <span>✉</span> {profile.email_publik}
+                  </span>
+                )}
+                {profile?.alamat_koordinat && !profile.alamat_koordinat.startsWith('http') && (
+                  <span className="flex items-center gap-1 opacity-90">
+                    <span>📍</span> {profile.alamat_koordinat.split(',')[0].trim()}
+                  </span>
+                )}
+                {profile?.linkedin_url && (
+                  <span className="flex items-center gap-1 opacity-90">
+                    <span>🔗</span> {profile.linkedin_url.replace('https://www.linkedin.com/in/', 'linkedin.com/in/').replace('https://linkedin.com/in/', 'linkedin.com/in/')}
+                  </span>
+                )}
+                {profile?.github_url && (
+                  <span className="flex items-center gap-1 opacity-90">
+                    <span>💻</span> {profile.github_url.replace('https://github.com/', 'github.com/')}
+                  </span>
+                )}
+                {profile?.website_url && !profile.website_url.includes('maps') && (
+                  <span className="flex items-center gap-1 opacity-90">
+                    <span>🌐</span> {profile.website_url.replace('https://www.', '').replace('https://', '')}
+                  </span>
+                )}
+              </div>
             </div>
           </div>
 
@@ -216,9 +234,11 @@ export default function CVPage() {
                 <div className="space-y-1.5 text-xs text-gray-700">
                   {profile?.no_whatsapp && <p>📱 {profile.no_whatsapp}</p>}
                   {profile?.email_publik && <p>✉ {profile.email_publik}</p>}
-                  {profile?.alamat_koordinat && <p>📍 {profile.alamat_koordinat}</p>}
-                  {profile?.linkedin_url && <p>🔗 {profile.linkedin_url.replace('https://', '')}</p>}
-                  {profile?.github_url && <p>💻 {profile.github_url.replace('https://', '')}</p>}
+                  {profile?.alamat_koordinat && !profile.alamat_koordinat.startsWith('http') && (
+                    <p>📍 {profile.alamat_koordinat.split(',')[0].trim()}</p>
+                  )}
+                  {profile?.linkedin_url && <p>🔗 {profile.linkedin_url.replace('https://www.linkedin.com/in/', 'linkedin.com/in/').replace('https://linkedin.com/in/', 'linkedin.com/in/')}</p>}
+                  {profile?.github_url && <p>💻 {profile.github_url.replace('https://github.com/', 'github.com/')}</p>}
                 </div>
               </div>
             </div>

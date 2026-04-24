@@ -304,7 +304,7 @@ export default function LandingPage() {
                 'Cetak CV & Surat Lamaran',
                 'SEO otomatis per halaman',
                 'Tombol WhatsApp & Google Maps',
-                'Info Lowongan Kerja sesuai kota',
+                '🔔 Info Lowongan Kerja sesuai kota',
                 'Support prioritas',
               ].map((item) => (
                 <li key={item} className="flex items-center gap-3 text-sm">

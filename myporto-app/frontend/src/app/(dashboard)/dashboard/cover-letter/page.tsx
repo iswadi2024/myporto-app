@@ -32,7 +32,7 @@ const DEFAULT_LAMPIRAN = [
   'Fotokopi Ijazah dan Transkrip Nilai',
   'Fotokopi KTP',
   'Pas Foto terbaru (4×6)',
-  'Sertifikat pendukung (jika ada)',
+  'Sertifikat pendukung',
 ];
 
 export default function CoverLetterPage() {

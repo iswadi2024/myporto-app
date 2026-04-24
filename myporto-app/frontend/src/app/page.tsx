@@ -258,7 +258,7 @@ export default function LandingPage() {
             {[
               { step: '01', title: 'Daftar Akun', desc: 'Buat akun gratis dengan email Anda. Tidak perlu kartu kredit.' },
               { step: '02', title: 'Isi Portofolio', desc: 'Tambahkan profil, pendidikan, pengalaman, dan keahlian Anda.' },
-              { step: '03', title: 'Aktifkan & Bagikan', desc: 'Bayar sekali dan dapatkan link publik myporto-app.vercel.app/p/nama-anda.' },
+              { step: '03', title: 'Aktifkan & Bagikan', desc: 'Aktifkan akun dan dapatkan link publik myporto-app.vercel.app/p/nama-anda.' },
             ].map((item) => (
               <div key={item.step} className="relative text-center">
                 <div className="w-20 h-20 bg-white rounded-2xl shadow-md border border-blue-100 flex items-center justify-center mx-auto mb-5">
@@ -277,7 +277,7 @@ export default function LandingPage() {
         <div className="text-center mb-14">
           <p className="text-blue-600 font-semibold text-sm uppercase tracking-wider mb-3">Harga</p>
           <h2 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-4">Transparan & Terjangkau</h2>
-          <p className="text-gray-500">Bayar sekali, nikmati selamanya. Tanpa biaya bulanan.</p>
+          <p className="text-gray-500">Aktif 30 hari per pembayaran. Perpanjang kapan saja.</p>
         </div>
 
         <div className="max-w-md mx-auto">

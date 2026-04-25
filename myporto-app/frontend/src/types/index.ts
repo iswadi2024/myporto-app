@@ -21,6 +21,7 @@ export interface Profile {
   tempat_lahir?: string;
   tanggal_lahir?: string;
   no_whatsapp?: string;
+  alamat_teks?: string;
   alamat_koordinat?: string;
   email_publik?: string;
   instagram_url?: string;

@@ -19,7 +19,7 @@ export const upsertProfile = async (req: AuthRequest, res: Response): Promise<vo
   try {
     const {
       nama_lengkap, bio_singkat, tempat_lahir, tanggal_lahir,
-      no_whatsapp, alamat_koordinat, email_publik,
+      no_whatsapp, alamat_teks, alamat_koordinat, email_publik,
       instagram_url, linkedin_url, github_url, website_url,
     } = req.body;
 
@@ -35,6 +35,7 @@ export const upsertProfile = async (req: AuthRequest, res: Response): Promise<vo
       tempat_lahir: tempat_lahir || null,
       tanggal_lahir: tanggal_lahir ? new Date(tanggal_lahir) : null,
       no_whatsapp: no_whatsapp || null,
+      alamat_teks: alamat_teks || null,
       alamat_koordinat: alamat_koordinat || null,
       email_publik: email_publik || null,
       instagram_url: instagram_url || null,

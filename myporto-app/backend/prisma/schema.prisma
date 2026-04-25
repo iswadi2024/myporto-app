@@ -41,7 +41,8 @@ model Profile {
   tempat_lahir     String?  @db.VarChar(100)
   tanggal_lahir    DateTime? @db.Date
   no_whatsapp      String?  @db.VarChar(20)
-  alamat_koordinat String?  @db.VarChar(255)
+  alamat_teks      String?  @db.VarChar(255)
+  alamat_koordinat String?  @db.VarChar(500)
   email_publik     String?  @db.VarChar(100)
   instagram_url    String?  @db.VarChar(255)
   linkedin_url     String?  @db.VarChar(255)

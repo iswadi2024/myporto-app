@@ -332,11 +332,6 @@ export default function CVPage() {
               )}
             </div>
           </div>
-
-          {/* Footer */}
-          <div className="px-8 py-3 text-center text-xs text-gray-400 border-t border-gray-100 print:py-2">
-            CV dibuat dengan MyPorto — myporto.id
-          </div>
         </div>
       </div>
 

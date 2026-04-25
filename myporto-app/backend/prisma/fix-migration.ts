@@ -29,6 +29,7 @@ async function main() {
     ['profiles', 'tempat_lahir', 'VARCHAR(100) NULL'],
     ['profiles', 'tanggal_lahir', 'DATE NULL'],
     ['profiles', 'nama_locked', 'TINYINT(1) NOT NULL DEFAULT 0'],
+    ['profiles', 'alamat_teks', 'VARCHAR(255) NULL'],
     ['users', 'paid_until', 'DATETIME NULL'],
   ];
 
@@ -54,6 +55,7 @@ async function main() {
   const toMark = [
     ...toDelete,
     '20260423000001_add_subscription_and_nama_lock',
+    '20260424000001_add_alamat_teks',
   ];
 
   for (const name of toMark) {

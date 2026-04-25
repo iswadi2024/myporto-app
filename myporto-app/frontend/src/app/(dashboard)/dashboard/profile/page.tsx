@@ -208,8 +208,19 @@ export default function ProfilePage() {
               <input {...register('email_publik')} type="email" className={inputCls} placeholder="email@contoh.com" />
             </div>
             <div className="md:col-span-2">
-              <label className="block text-sm font-medium text-slate-700 mb-1.5">Alamat / Koordinat Google Maps</label>
-              <input {...register('alamat_koordinat')} className={inputCls} placeholder="Jakarta, Indonesia atau URL Google Maps" />
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                Alamat Lengkap
+                <span className="text-slate-400 font-normal text-xs ml-1">(untuk CV & Surat Lamaran)</span>
+              </label>
+              <input {...register('alamat_teks')} className={inputCls} placeholder="Jl. Contoh No. 123, Kota, Provinsi" />
+            </div>
+            <div className="md:col-span-2">
+              <label className="block text-sm font-medium text-slate-700 mb-1.5">
+                URL Google Maps
+                <span className="text-slate-400 font-normal text-xs ml-1">(untuk peta di portofolio)</span>
+              </label>
+              <input {...register('alamat_koordinat')} className={inputCls} placeholder="https://maps.app.goo.gl/..." />
+              <p className="text-xs text-slate-400 mt-1">Buka Google Maps → klik lokasi → Share → Copy link</p>
             </div>
           </div>
         </div>

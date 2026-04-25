@@ -51,15 +51,11 @@ export default function CoverLetterPage() {
     api.get('/profile').then((res) => setProfile(res.data.profile || null));
   }, []);
 
-  // Fallback: jika profile dari API tidak punya TTL, coba dari store
   const profileData = profile || user?.profile || null;
   const pendidikanTerakhir = education[0];
   const tanggalSurat = formatTanggal(today);
-
-  // Alamat: hanya tampilkan teks, bukan URL
-  const alamatRaw = profileData?.alamat_koordinat || '';
-  const alamatTeks = alamatRaw.startsWith('http') ? '' : alamatRaw;
-  const kotaAsal = kotaOverride || extractKota(profileData?.alamat_koordinat);
+  const alamatTeks = (profileData?.alamat_teks || profileData?.alamat_koordinat || '').replace(/https?:\/\/\S+/g, '').trim();
+  const kotaAsal = kotaOverride || extractKota(profileData?.alamat_teks || profileData?.alamat_koordinat);
   const ttl = formatTTL((profileData as any)?.tempat_lahir, (profileData as any)?.tanggal_lahir);
   const isReady = tujuanPerusahaan.trim() && posisi.trim();
 
@@ -71,46 +67,25 @@ export default function CoverLetterPage() {
 
   const removeLampiran = (i: number) => setLampiran(prev => prev.filter((_, idx) => idx !== i));
 
-  const handlePrint = () => window.print();
-
   return (
     <>
-      {/* Print styles — harus di luar wrapper agar tidak tersembunyi */}
       <style>{`
         @media print {
-          /* Sembunyikan elemen UI */
           aside, nav, .no-print { display: none !important; }
-          
-          /* Reset body */
-          body { 
-            margin: 0 !important; 
-            padding: 0 !important;
-            background: white !important; 
-          }
-          
-          /* Tampilkan hanya letter-wrap */
-          #letter-wrap { 
-            display: flex !important; 
-            justify-content: center !important;
-            align-items: flex-start !important;
-            width: 100% !important;
-            padding: 0 !important;
-            margin: 0 !important;
-          }
-          #letter-print { 
-            visibility: visible !important; 
+          body { margin: 0 !important; padding: 0 !important; background: white !important; }
+          #letter-print {
+            visibility: visible !important;
             box-shadow: none !important;
-            margin: 0 auto !important;
+            position: fixed !important;
+            top: 0 !important; left: 0 !important;
+            width: 100% !important;
+            height: 100% !important;
+            margin: 0 !important;
+            padding: 2cm 2.5cm !important;
           }
           #letter-print * { visibility: visible !important; }
-          
-          /* Warna border tercetak */
           * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
-          
-          @page { 
-            size: A4 portrait; 
-            margin: 0.8cm 1cm;
-          }
+          @page { size: A4 portrait; margin: 0; }
         }
       `}</style>
 
@@ -122,7 +97,7 @@ export default function CoverLetterPage() {
               <h1 className="text-lg font-bold text-gray-900">Surat Lamaran Kerja</h1>
               <p className="text-xs text-gray-500">Data diambil otomatis dari profil Anda</p>
             </div>
-            <button onClick={handlePrint} disabled={!isReady}
+            <button onClick={() => window.print()} disabled={!isReady}
               className="flex items-center gap-2 bg-blue-600 text-white px-5 py-2 rounded-lg text-sm font-semibold hover:bg-blue-700 disabled:opacity-40">
               <Printer className="w-4 h-4" />
               Cetak / Simpan PDF
@@ -183,7 +158,7 @@ export default function CoverLetterPage() {
             </div>
           </div>
 
-          {/* Info sinkron */}
+          {/* Info */}
           <div className="bg-blue-50 border border-blue-100 rounded-xl p-3 text-xs text-blue-700">
             <strong>Data profil:</strong> {profileData?.nama_lengkap || '-'} · TTL: {ttl} · WA: {profileData?.no_whatsapp || '-'}
             {(!(profileData as any)?.tempat_lahir || !(profileData as any)?.tanggal_lahir) && (
@@ -192,132 +167,112 @@ export default function CoverLetterPage() {
           </div>
         </div>
 
-        {/* Surat A4 */}
-        <div id="letter-wrap" className="max-w-4xl mx-auto pb-8 px-4 flex justify-center">
-          <div id="letter-print" className="bg-white shadow-2xl relative"
+        {/* Preview surat */}
+        <div className="max-w-4xl mx-auto pb-8 px-4 flex justify-center">
+          <div id="letter-print" className="bg-white shadow-xl"
             style={{
               fontFamily: '"Times New Roman", Times, serif',
               fontSize: '12pt',
               lineHeight: '1.8',
               color: '#111',
-              minHeight: '27cm',
-              width: '19cm',
-              margin: '0 auto',
+              width: '21cm',
+              minHeight: '29.7cm',
+              padding: '2cm 2.5cm',
               boxSizing: 'border-box' as const,
-              overflow: 'hidden',
             }}>
 
-            {/* Border dekoratif — dikurangi agar tidak terpotong */}
-            <div style={{ position: 'absolute', inset: 0, border: '8px solid #1e3a8a', pointerEvents: 'none', zIndex: 1, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as React.CSSProperties} />
-            <div style={{ position: 'absolute', inset: '11px', border: '2px solid #3b82f6', pointerEvents: 'none', zIndex: 1, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as React.CSSProperties} />
-            <div style={{ position: 'absolute', inset: '15px', border: '1px solid #bfdbfe', pointerEvents: 'none', zIndex: 1, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact' } as React.CSSProperties} />
-
-            {/* Ornamen sudut */}
-            {([
-              { top: 4, left: 4, borderTop: '3px solid #f59e0b', borderLeft: '3px solid #f59e0b' },
-              { top: 4, right: 4, borderTop: '3px solid #f59e0b', borderRight: '3px solid #f59e0b' },
-              { bottom: 4, left: 4, borderBottom: '3px solid #f59e0b', borderLeft: '3px solid #f59e0b' },
-              { bottom: 4, right: 4, borderBottom: '3px solid #f59e0b', borderRight: '3px solid #f59e0b' },
-            ] as React.CSSProperties[]).map((style, i) => (
-              <div key={i} style={{ position: 'absolute', width: 20, height: 20, zIndex: 2, WebkitPrintColorAdjust: 'exact', printColorAdjust: 'exact', ...style } as React.CSSProperties} />
-            ))}
-
-            {/* Konten — padding lebih kecil agar muat */}
-            <div style={{ padding: '1.5cm 2cm', position: 'relative', zIndex: 3 }}>
-
-              {/* Header */}
-              <div style={{ textAlign: 'center', marginBottom: '0.6cm', paddingBottom: '0.3cm', borderBottom: '2px solid #1e3a8a' }}>
-                <div style={{ fontSize: '13pt', color: '#1e3a8a', fontWeight: 'bold', letterSpacing: '2px' }}>
-                  SURAT LAMARAN PEKERJAAN
-                </div>
+            {/* Header */}
+            <div style={{ textAlign: 'center', marginBottom: '0.6cm', paddingBottom: '0.3cm', borderBottom: '2px solid #1e3a8a' }}>
+              <div style={{ fontSize: '13pt', color: '#1e3a8a', fontWeight: 'bold', letterSpacing: '2px' }}>
+                SURAT LAMARAN PEKERJAAN
               </div>
+            </div>
 
-              {/* Tanggal */}
-              <div style={{ textAlign: 'right', marginBottom: '0.8cm' }}>
-                {kotaAsal}, {tanggalSurat}
-              </div>
+            {/* Tanggal */}
+            <div style={{ textAlign: 'right', marginBottom: '0.8cm' }}>
+              {kotaAsal}, {tanggalSurat}
+            </div>
 
-              {/* Kepada */}
-              <div style={{ marginBottom: '0.6cm' }}>
-                <div>Kepada Yth.</div>
-                <div>Bapak/Ibu HRD / Manajer Rekrutmen</div>
-                <div style={{ fontWeight: 'bold' }}>{tujuanPerusahaan || '[Nama Perusahaan / Instansi]'}</div>
-                <div>di Tempat</div>
-              </div>
+            {/* Kepada */}
+            <div style={{ marginBottom: '0.6cm' }}>
+              <div>Kepada Yth.</div>
+              <div>Bapak/Ibu HRD / Manajer Rekrutmen</div>
+              <div style={{ fontWeight: 'bold' }}>{tujuanPerusahaan || '[Nama Perusahaan / Instansi]'}</div>
+              <div>di Tempat</div>
+            </div>
 
-              {/* Perihal */}
-              <div style={{ marginBottom: '0.6cm' }}>
-                <strong>Perihal</strong>{' : Lamaran Pekerjaan sebagai '}
-                <strong>{posisi || '[Posisi yang Dilamar]'}</strong>
-              </div>
+            {/* Perihal */}
+            <div style={{ marginBottom: '0.6cm' }}>
+              <strong>Perihal</strong>{' : Lamaran Pekerjaan sebagai '}
+              <strong>{posisi || '[Posisi yang Dilamar]'}</strong>
+            </div>
 
-              <div style={{ marginBottom: '0.3cm' }}>Dengan hormat,</div>
+            <div style={{ marginBottom: '0.3cm' }}>Dengan hormat,</div>
 
-              <div style={{ marginBottom: '0.3cm', textAlign: 'justify' }}>
-                Saya yang bertanda tangan di bawah ini:
-              </div>
+            <div style={{ marginBottom: '0.3cm', textAlign: 'justify' }}>
+              Saya yang bertanda tangan di bawah ini:
+            </div>
 
-              {/* Data diri */}
-              <table style={{ marginLeft: '1.5cm', marginBottom: '0.5cm', borderCollapse: 'separate', borderSpacing: '0 2px' }}>
-                <tbody>
-                  {[
-                    ['Nama Lengkap', profileData?.nama_lengkap || '-'],
-                    ['Tempat, Tanggal Lahir', ttl],
-                    ['Pendidikan Terakhir', pendidikanTerakhir
-                      ? `${pendidikanTerakhir.jenjang ? pendidikanTerakhir.jenjang + ' - ' : ''}${pendidikanTerakhir.gelar || ''} ${pendidikanTerakhir.jurusan ? '- ' + pendidikanTerakhir.jurusan : ''} (${pendidikanTerakhir.institusi})`.trim()
-                      : '-'],
-                    ['No. Telepon / WA', profileData?.no_whatsapp || '-'],
-                    ['Email', profileData?.email_publik || '-'],
-                    ['Alamat', alamatTeks || '-'],
-                  ].map(([label, value]) => (
-                    <tr key={label}>
-                      <td style={{ paddingRight: '12px', verticalAlign: 'top', minWidth: '185px' }}>{label}</td>
-                      <td style={{ paddingRight: '8px', verticalAlign: 'top' }}>:</td>
-                      <td style={{ verticalAlign: 'top' }}>{value}</td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-
-              <div style={{ marginBottom: '0.4cm', textAlign: 'justify' }}>
-                Dengan ini saya mengajukan permohonan untuk dapat bergabung dan bekerja di{' '}
-                <strong>{tujuanPerusahaan || '[Nama Perusahaan]'}</strong> pada posisi{' '}
-                <strong>{posisi || '[Posisi yang Dilamar]'}</strong>.
-                Saya memiliki minat yang besar terhadap bidang ini dan yakin dapat memberikan kontribusi yang berarti bagi kemajuan perusahaan.
-              </div>
-
-              <div style={{ marginBottom: '0.4cm', textAlign: 'justify' }}>
-                Saya adalah pribadi yang disiplin, bertanggung jawab, mampu bekerja secara mandiri maupun dalam tim, serta memiliki kemampuan komunikasi yang baik. Saya siap untuk terus belajar dan berkembang sesuai dengan kebutuhan perusahaan.
-              </div>
-
-              <div style={{ marginBottom: '0.3cm' }}>
-                Sebagai bahan pertimbangan, bersama surat lamaran ini saya lampirkan:
-              </div>
-
-              <ol style={{ 
-                marginLeft: '1.5cm', 
-                marginBottom: '0.5cm', 
-                paddingLeft: '0.5cm',
-                listStyleType: 'decimal',
-                listStylePosition: 'outside',
-              }}>
-                {lampiran.map((item, i) => (
-                  <li key={i} style={{ marginBottom: '2px', paddingLeft: '4px' }}>{item}</li>
+            {/* Data diri */}
+            <table style={{ marginLeft: '1.5cm', marginBottom: '0.5cm', borderCollapse: 'separate', borderSpacing: '0 2px' }}>
+              <tbody>
+                {[
+                  ['Nama Lengkap', profileData?.nama_lengkap || '-'],
+                  ['Tempat, Tanggal Lahir', ttl],
+                  ['Pendidikan Terakhir', pendidikanTerakhir
+                    ? `${pendidikanTerakhir.jenjang ? pendidikanTerakhir.jenjang + ' - ' : ''}${pendidikanTerakhir.gelar || ''} ${pendidikanTerakhir.jurusan ? '- ' + pendidikanTerakhir.jurusan : ''} (${pendidikanTerakhir.institusi})`.trim()
+                    : '-'],
+                  ['No. Telepon / WA', profileData?.no_whatsapp || '-'],
+                  ['Email', profileData?.email_publik || '-'],
+                  ['Alamat', alamatTeks || '-'],
+                ].map(([label, value]) => (
+                  <tr key={label}>
+                    <td style={{ paddingRight: '12px', verticalAlign: 'top', minWidth: '185px' }}>{label}</td>
+                    <td style={{ paddingRight: '8px', verticalAlign: 'top' }}>:</td>
+                    <td style={{ verticalAlign: 'top' }}>{value}</td>
+                  </tr>
                 ))}
-              </ol>
+              </tbody>
+            </table>
 
-              <div style={{ marginBottom: '0.6cm', textAlign: 'justify' }}>
-                Besar harapan saya untuk dapat diberikan kesempatan wawancara guna menjelaskan lebih lanjut mengenai kemampuan dan pengalaman saya. Atas perhatian dan kesempatan yang diberikan, saya mengucapkan terima kasih.
-              </div>
+            <div style={{ marginBottom: '0.4cm', textAlign: 'justify' }}>
+              Dengan ini saya mengajukan permohonan untuk dapat bergabung dan bekerja di{' '}
+              <strong>{tujuanPerusahaan || '[Nama Perusahaan]'}</strong> pada posisi{' '}
+              <strong>{posisi || '[Posisi yang Dilamar]'}</strong>.
+              Saya memiliki minat yang besar terhadap bidang ini dan yakin dapat memberikan kontribusi yang berarti bagi kemajuan perusahaan.
+            </div>
 
-              {/* TTD */}
-              <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-                <div style={{ textAlign: 'center', minWidth: '200px' }}>
-                  <div>Hormat saya,</div>
-                  <div style={{ height: '2cm' }} />
-                  <div style={{ fontWeight: 'bold', borderTop: '1px solid #333', paddingTop: '4px' }}>
-                    {profileData?.nama_lengkap || '[Nama Lengkap]'}
-                  </div>
+            <div style={{ marginBottom: '0.4cm', textAlign: 'justify' }}>
+              Saya adalah pribadi yang disiplin, bertanggung jawab, mampu bekerja secara mandiri maupun dalam tim, serta memiliki kemampuan komunikasi yang baik. Saya siap untuk terus belajar dan berkembang sesuai dengan kebutuhan perusahaan.
+            </div>
+
+            <div style={{ marginBottom: '0.3cm' }}>
+              Sebagai bahan pertimbangan, bersama surat lamaran ini saya lampirkan:
+            </div>
+
+            <ol style={{
+              marginLeft: '1.5cm',
+              marginBottom: '0.5cm',
+              paddingLeft: '0.5cm',
+              listStyleType: 'decimal',
+              listStylePosition: 'outside',
+            }}>
+              {lampiran.map((item, i) => (
+                <li key={i} style={{ marginBottom: '2px', paddingLeft: '4px' }}>{item}</li>
+              ))}
+            </ol>
+
+            <div style={{ marginBottom: '0.8cm', textAlign: 'justify' }}>
+              Besar harapan saya untuk dapat diberikan kesempatan wawancara guna menjelaskan lebih lanjut mengenai kemampuan dan pengalaman saya. Atas perhatian dan kesempatan yang diberikan, saya mengucapkan terima kasih.
+            </div>
+
+            {/* TTD */}
+            <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
+              <div style={{ textAlign: 'center', minWidth: '200px' }}>
+                <div>Hormat saya,</div>
+                <div style={{ height: '2cm' }} />
+                <div style={{ fontWeight: 'bold', borderTop: '1px solid #333', paddingTop: '4px' }}>
+                  {profileData?.nama_lengkap || '[Nama Lengkap]'}
                 </div>
               </div>
             </div>

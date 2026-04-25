@@ -172,29 +172,29 @@ export default function CoverLetterPage() {
           <div id="letter-print" className="bg-white shadow-xl"
             style={{
               fontFamily: '"Times New Roman", Times, serif',
-              fontSize: '12pt',
-              lineHeight: '1.8',
+              fontSize: '11.5pt',
+              lineHeight: '1.5',
               color: '#111',
               width: '21cm',
               minHeight: '29.7cm',
-              padding: '2cm 2.5cm',
+              padding: '1.8cm 2.2cm',
               boxSizing: 'border-box' as const,
             }}>
 
             {/* Header */}
-            <div style={{ textAlign: 'center', marginBottom: '0.6cm', paddingBottom: '0.3cm', borderBottom: '2px solid #1e3a8a' }}>
+            <div style={{ textAlign: 'center', marginBottom: '0.4cm', paddingBottom: '0.2cm', borderBottom: '2px solid #1e3a8a' }}>
               <div style={{ fontSize: '13pt', color: '#1e3a8a', fontWeight: 'bold', letterSpacing: '2px' }}>
                 SURAT LAMARAN PEKERJAAN
               </div>
             </div>
 
             {/* Tanggal */}
-            <div style={{ textAlign: 'right', marginBottom: '0.8cm' }}>
+            <div style={{ textAlign: 'right', marginBottom: '0.5cm' }}>
               {kotaAsal}, {tanggalSurat}
             </div>
 
             {/* Kepada */}
-            <div style={{ marginBottom: '0.6cm' }}>
+            <div style={{ marginBottom: '0.4cm' }}>
               <div>Kepada Yth.</div>
               <div>Bapak/Ibu HRD / Manajer Rekrutmen</div>
               <div style={{ fontWeight: 'bold' }}>{tujuanPerusahaan || '[Nama Perusahaan / Instansi]'}</div>
@@ -202,19 +202,19 @@ export default function CoverLetterPage() {
             </div>
 
             {/* Perihal */}
-            <div style={{ marginBottom: '0.6cm' }}>
+            <div style={{ marginBottom: '0.4cm' }}>
               <strong>Perihal</strong>{' : Lamaran Pekerjaan sebagai '}
               <strong>{posisi || '[Posisi yang Dilamar]'}</strong>
             </div>
 
-            <div style={{ marginBottom: '0.3cm' }}>Dengan hormat,</div>
+            <div style={{ marginBottom: '0.2cm' }}>Dengan hormat,</div>
 
-            <div style={{ marginBottom: '0.3cm', textAlign: 'justify' }}>
+            <div style={{ marginBottom: '0.2cm', textAlign: 'justify' }}>
               Saya yang bertanda tangan di bawah ini:
             </div>
 
             {/* Data diri */}
-            <table style={{ marginLeft: '1.5cm', marginBottom: '0.5cm', borderCollapse: 'separate', borderSpacing: '0 2px' }}>
+            <table style={{ marginLeft: '1.2cm', marginBottom: '0.4cm', borderCollapse: 'separate', borderSpacing: '0 1px', fontSize: '11.5pt' }}>
               <tbody>
                 {[
                   ['Nama Lengkap', profileData?.nama_lengkap || '-'],
@@ -227,51 +227,52 @@ export default function CoverLetterPage() {
                   ['Alamat', alamatTeks || '-'],
                 ].map(([label, value]) => (
                   <tr key={label}>
-                    <td style={{ paddingRight: '12px', verticalAlign: 'top', minWidth: '185px' }}>{label}</td>
-                    <td style={{ paddingRight: '8px', verticalAlign: 'top' }}>:</td>
+                    <td style={{ paddingRight: '10px', verticalAlign: 'top', minWidth: '175px' }}>{label}</td>
+                    <td style={{ paddingRight: '6px', verticalAlign: 'top' }}>:</td>
                     <td style={{ verticalAlign: 'top' }}>{value}</td>
                   </tr>
                 ))}
               </tbody>
             </table>
 
-            <div style={{ marginBottom: '0.4cm', textAlign: 'justify' }}>
+            <div style={{ marginBottom: '0.3cm', textAlign: 'justify' }}>
               Dengan ini saya mengajukan permohonan untuk dapat bergabung dan bekerja di{' '}
               <strong>{tujuanPerusahaan || '[Nama Perusahaan]'}</strong> pada posisi{' '}
               <strong>{posisi || '[Posisi yang Dilamar]'}</strong>.
               Saya memiliki minat yang besar terhadap bidang ini dan yakin dapat memberikan kontribusi yang berarti bagi kemajuan perusahaan.
             </div>
 
-            <div style={{ marginBottom: '0.4cm', textAlign: 'justify' }}>
+            <div style={{ marginBottom: '0.3cm', textAlign: 'justify' }}>
               Saya adalah pribadi yang disiplin, bertanggung jawab, mampu bekerja secara mandiri maupun dalam tim, serta memiliki kemampuan komunikasi yang baik. Saya siap untuk terus belajar dan berkembang sesuai dengan kebutuhan perusahaan.
             </div>
 
-            <div style={{ marginBottom: '0.3cm' }}>
+            <div style={{ marginBottom: '0.2cm' }}>
               Sebagai bahan pertimbangan, bersama surat lamaran ini saya lampirkan:
             </div>
 
             <ol style={{
-              marginLeft: '1.5cm',
-              marginBottom: '0.5cm',
-              paddingLeft: '0.5cm',
+              marginLeft: '1.2cm',
+              marginBottom: '0.4cm',
+              paddingLeft: '0.4cm',
               listStyleType: 'decimal',
               listStylePosition: 'outside',
+              fontSize: '11.5pt',
             }}>
               {lampiran.map((item, i) => (
-                <li key={i} style={{ marginBottom: '2px', paddingLeft: '4px' }}>{item}</li>
+                <li key={i} style={{ marginBottom: '1px' }}>{item}</li>
               ))}
             </ol>
 
-            <div style={{ marginBottom: '0.8cm', textAlign: 'justify' }}>
+            <div style={{ marginBottom: '0.5cm', textAlign: 'justify' }}>
               Besar harapan saya untuk dapat diberikan kesempatan wawancara guna menjelaskan lebih lanjut mengenai kemampuan dan pengalaman saya. Atas perhatian dan kesempatan yang diberikan, saya mengucapkan terima kasih.
             </div>
 
             {/* TTD */}
             <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
-              <div style={{ textAlign: 'center', minWidth: '200px' }}>
+              <div style={{ textAlign: 'center', minWidth: '180px' }}>
                 <div>Hormat saya,</div>
-                <div style={{ height: '2cm' }} />
-                <div style={{ fontWeight: 'bold', borderTop: '1px solid #333', paddingTop: '4px' }}>
+                <div style={{ height: '1.8cm' }} />
+                <div style={{ fontWeight: 'bold', borderTop: '1px solid #333', paddingTop: '3px' }}>
                   {profileData?.nama_lengkap || '[Nama Lengkap]'}
                 </div>
               </div>

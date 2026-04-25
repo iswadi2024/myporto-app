@@ -553,7 +553,7 @@ export default function PortfolioView({ portfolio }: PortfolioViewProps) {
                   )}
 
                   {/* Maps */}
-                  {profile.alamat_koordinat && (
+                  {(profile.alamat_koordinat || (profile as any).alamat_teks) && (
                     <div className="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
                       <div className="flex items-center gap-3 p-4 border-b border-gray-100">
                         <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={gradientStyle}>
@@ -562,17 +562,54 @@ export default function PortfolioView({ portfolio }: PortfolioViewProps) {
                             <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
                           </svg>
                         </div>
-                        <p className="font-bold text-gray-900">Lokasi</p>
+                        <div className="flex-1">
+                          <p className="font-bold text-gray-900">Lokasi</p>
+                          {(profile as any).alamat_teks && (
+                            <p className="text-xs text-gray-500">{(profile as any).alamat_teks}</p>
+                          )}
+                        </div>
+                        {profile.alamat_koordinat && (
+                          <a href={profile.alamat_koordinat} target="_blank" rel="noopener noreferrer"
+                            className="text-xs font-semibold px-3 py-1.5 rounded-lg flex-shrink-0 text-white"
+                            style={{ backgroundColor: primaryColor }}>
+                            Buka Maps →
+                          </a>
+                        )}
                       </div>
-                      <iframe
-                        src={`https://maps.google.com/maps?q=${encodeURIComponent(profile.alamat_koordinat)}&output=embed`}
-                        width="100%"
-                        height="280"
-                        className="block"
-                        loading="lazy"
-                        referrerPolicy="no-referrer-when-downgrade"
-                        title="Lokasi"
-                      />
+                      {/* Embed menggunakan alamat_teks sebagai query (lebih akurat dari short URL) */}
+                      {(() => {
+                        const teks = (profile as any).alamat_teks;
+                        const koordinat = profile.alamat_koordinat || '';
+                        // Ekstrak koordinat dari URL panjang jika ada
+                        const coordMatch = koordinat.match(/@(-?\d+\.\d+),(-?\d+\.\d+)/);
+                        let embedSrc = '';
+                        if (coordMatch) {
+                          embedSrc = `https://maps.google.com/maps?q=${coordMatch[1]},${coordMatch[2]}&output=embed&z=16`;
+                        } else if (teks) {
+                          embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(teks)}&output=embed`;
+                        } else if (koordinat && !koordinat.startsWith('http')) {
+                          embedSrc = `https://maps.google.com/maps?q=${encodeURIComponent(koordinat)}&output=embed`;
+                        }
+                        return embedSrc ? (
+                          <iframe
+                            src={embedSrc}
+                            width="100%"
+                            height="280"
+                            className="block"
+                            loading="lazy"
+                            referrerPolicy="no-referrer-when-downgrade"
+                            title="Lokasi"
+                            allowFullScreen
+                          />
+                        ) : (
+                          <div className="h-32 flex items-center justify-center bg-gray-50">
+                            <a href={koordinat} target="_blank" rel="noopener noreferrer"
+                              className="text-sm font-semibold text-blue-600 hover:underline">
+                              📍 Lihat di Google Maps
+                            </a>
+                          </div>
+                        );
+                      })()}
                     </div>
                   )}
                 </div>

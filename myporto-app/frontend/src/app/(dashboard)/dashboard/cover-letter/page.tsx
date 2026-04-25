@@ -82,17 +82,35 @@ export default function CoverLetterPage() {
           aside, nav, .no-print { display: none !important; }
           
           /* Reset body */
-          body { margin: 0 !important; background: white !important; }
+          body { 
+            margin: 0 !important; 
+            padding: 0 !important;
+            background: white !important; 
+          }
           
           /* Tampilkan hanya letter-wrap */
-          #letter-wrap { display: block !important; visibility: visible !important; }
-          #letter-print { visibility: visible !important; box-shadow: none !important; }
+          #letter-wrap { 
+            display: flex !important; 
+            justify-content: center !important;
+            align-items: flex-start !important;
+            width: 100% !important;
+            padding: 0 !important;
+            margin: 0 !important;
+          }
+          #letter-print { 
+            visibility: visible !important; 
+            box-shadow: none !important;
+            margin: 0 auto !important;
+          }
           #letter-print * { visibility: visible !important; }
           
           /* Warna border tercetak */
           * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
           
-          @page { size: A4 portrait; margin: 1cm; }
+          @page { 
+            size: A4 portrait; 
+            margin: 0.8cm 1cm;
+          }
         }
       `}</style>
 
@@ -175,7 +193,7 @@ export default function CoverLetterPage() {
         </div>
 
         {/* Surat A4 */}
-        <div id="letter-wrap" className="max-w-4xl mx-auto pb-8 px-4">
+        <div id="letter-wrap" className="max-w-4xl mx-auto pb-8 px-4 flex justify-center">
           <div id="letter-print" className="bg-white shadow-2xl relative"
             style={{
               fontFamily: '"Times New Roman", Times, serif',

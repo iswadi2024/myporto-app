@@ -172,21 +172,14 @@ export default function CoverLetterPage() {
           <div id="letter-print" className="bg-white shadow-xl"
             style={{
               fontFamily: '"Times New Roman", Times, serif',
-              fontSize: '11.5pt',
-              lineHeight: '1.5',
+              fontSize: '11pt',
+              lineHeight: '1.4',
               color: '#111',
               width: '21cm',
               minHeight: '29.7cm',
-              padding: '1.8cm 2.2cm',
+              padding: '1.5cm 2cm',
               boxSizing: 'border-box' as const,
             }}>
-
-            {/* Header */}
-            <div style={{ textAlign: 'center', marginBottom: '0.4cm', paddingBottom: '0.2cm', borderBottom: '2px solid #1e3a8a' }}>
-              <div style={{ fontSize: '13pt', color: '#1e3a8a', fontWeight: 'bold', letterSpacing: '2px' }}>
-                SURAT LAMARAN PEKERJAAN
-              </div>
-            </div>
 
             {/* Tanggal */}
             <div style={{ textAlign: 'right', marginBottom: '0.5cm' }}>
@@ -214,7 +207,7 @@ export default function CoverLetterPage() {
             </div>
 
             {/* Data diri */}
-            <table style={{ marginLeft: '1.2cm', marginBottom: '0.4cm', borderCollapse: 'separate', borderSpacing: '0 1px', fontSize: '11.5pt' }}>
+            <table style={{ marginLeft: '1.2cm', marginBottom: '0.35cm', borderCollapse: 'separate', borderSpacing: '0 1px', fontSize: '11pt' }}>
               <tbody>
                 {[
                   ['Nama Lengkap', profileData?.nama_lengkap || '-'],
@@ -227,7 +220,7 @@ export default function CoverLetterPage() {
                   ['Alamat', alamatTeks || '-'],
                 ].map(([label, value]) => (
                   <tr key={label}>
-                    <td style={{ paddingRight: '10px', verticalAlign: 'top', minWidth: '175px' }}>{label}</td>
+                    <td style={{ paddingRight: '10px', verticalAlign: 'top', minWidth: '170px' }}>{label}</td>
                     <td style={{ paddingRight: '6px', verticalAlign: 'top' }}>:</td>
                     <td style={{ verticalAlign: 'top' }}>{value}</td>
                   </tr>
@@ -252,18 +245,18 @@ export default function CoverLetterPage() {
 
             <ol style={{
               marginLeft: '1.2cm',
-              marginBottom: '0.4cm',
+              marginBottom: '0.35cm',
               paddingLeft: '0.4cm',
               listStyleType: 'decimal',
               listStylePosition: 'outside',
-              fontSize: '11.5pt',
+              fontSize: '11pt',
             }}>
               {lampiran.map((item, i) => (
                 <li key={i} style={{ marginBottom: '1px' }}>{item}</li>
               ))}
             </ol>
 
-            <div style={{ marginBottom: '0.5cm', textAlign: 'justify' }}>
+            <div style={{ marginBottom: '0.4cm', textAlign: 'justify' }}>
               Besar harapan saya untuk dapat diberikan kesempatan wawancara guna menjelaskan lebih lanjut mengenai kemampuan dan pengalaman saya. Atas perhatian dan kesempatan yang diberikan, saya mengucapkan terima kasih.
             </div>
 

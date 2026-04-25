@@ -24,6 +24,7 @@ const navItems = [
   { href: '/dashboard/payment', label: 'Pembayaran', icon: CreditCard, color: 'text-orange-500' },
   { href: '/dashboard/publish', label: 'Publikasi', icon: Globe, color: 'text-green-500' },
   { href: '/dashboard/loker', label: 'Info Loker', icon: Briefcase, color: 'text-rose-500' },
+  { href: '/dashboard/tips', label: 'Tips Karir', icon: Award, color: 'text-yellow-500' },
   { href: '/dashboard/settings', label: 'Pengaturan Akun', icon: Settings, color: 'text-slate-400' },
 ];
 
